@@ -1,0 +1,11 @@
+C:\ST\STM32CubeIDE_1.13.2\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626\tools\bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/include/c++/11.3.1/cmath:463:3:constexpr float std::sqrt(float)	1
+../Lib/Util/Math/src/Quaternion.cpp:15:13:Mat::Quaternion& Mat::Quaternion::operator+=(const Mat::Quaternion&)	1
+../Lib/Util/Math/src/Quaternion.cpp:24:13:Mat::Quaternion& Mat::Quaternion::operator-=(const Mat::Quaternion&)	1
+../Lib/Util/Math/src/Quaternion.cpp:33:13:Mat::Quaternion& Mat::Quaternion::operator*=(const Mat::Quaternion&)	1
+../Lib/Util/Math/src/Quaternion.cpp:39:13:Mat::Quaternion& Mat::Quaternion::operator*=(float)	1
+../Lib/Util/Math/src/Quaternion.cpp:48:12:Mat::Quaternion Mat::Quaternion::operator+(const Mat::Quaternion&) const	1
+../Lib/Util/Math/src/Quaternion.cpp:55:12:Mat::Quaternion Mat::Quaternion::operator-(const Mat::Quaternion&) const	1
+../Lib/Util/Math/src/Quaternion.cpp:62:12:Mat::Quaternion Mat::Quaternion::operator*(const Mat::Quaternion&) const	1
+../Lib/Util/Math/src/Quaternion.cpp:72:12:Mat::Quaternion Mat::Quaternion::operator*(float) const	1
+../Lib/Util/Math/src/Quaternion.cpp:79:12:Mat::Quaternion Mat::Quaternion::Conjugate() const	1
+../Lib/Util/Math/src/Quaternion.cpp:88:7:float Mat::Quaternion::Norm() const	1

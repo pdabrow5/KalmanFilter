@@ -1,0 +1,6 @@
+../Lib/Util/Algorithms/MadgwickAHRSclass.cpp:41:1:Madgwick::Madgwick()	16	static
+../Lib/Util/Algorithms/MadgwickAHRSclass.cpp:51:1:Madgwick::Madgwick(float, float)	24	static
+../Lib/Util/Algorithms/MadgwickAHRSclass.cpp:61:6:void Madgwick::update(float, float, float, float, float, float, float, float, float)	192	static
+../Lib/Util/Algorithms/MadgwickAHRSclass.cpp:167:6:void Madgwick::updateIMU(float, float, float, float, float, float)	128	static
+../Lib/Util/Algorithms/MadgwickAHRSclass.cpp:245:7:static float Madgwick::invSqrt(float)	32	static
+../Lib/Util/Algorithms/MadgwickAHRSclass.cpp:258:6:void Madgwick::computeAngles()	16	static

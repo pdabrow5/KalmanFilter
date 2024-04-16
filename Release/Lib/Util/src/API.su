@@ -1,0 +1,2 @@
+../Lib/Util/src/API.cpp:11:5:int CallFoo()	0	static
+../Lib/Util/src/API.cpp:16:5:int CallMoo()	0	static

@@ -1,0 +1,7 @@
+../Peripherals/BMI160/src/bmi160_wrapper.c:134:8:start_foc	16	static
+../Peripherals/BMI160/src/bmi160_wrapper.c:155:8:bmi160ReadAccelGyro	16	static
+../Peripherals/BMI160/src/bmi160_wrapper.c:188:6:set_bmi160_Ares	0	static
+../Peripherals/BMI160/src/bmi160_wrapper.c:207:6:set_bmi160_Gres	0	static
+../Peripherals/BMI160/src/bmi160_wrapper.c:229:6:get_bmi160_Ares	0	static
+../Peripherals/BMI160/src/bmi160_wrapper.c:251:6:get_bmi160_Gres	0	static
+../Peripherals/BMI160/src/bmi160_wrapper.c:50:8:BMI160_init	32	static
