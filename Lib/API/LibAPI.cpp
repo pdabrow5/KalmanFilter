@@ -7,17 +7,18 @@
 
 #include "LibAPI.h"
 
-#include "../Util/Algorithms/MadgwickAHRSclass.h"
 #include "../Util/Algorithms/MadgwickOriginal.h"
+#include "../Util/Algorithms/MyMadgwick.hpp"
 #include "Quaternion.hpp"
 #include "calibrate.h"
 #include "logger.h"
 
 #include <stdio.h>
 
-constexpr float IMUFrequency = 200.0f;
-constexpr float madgwickBeta = 0.1f;
-Madgwick madgwick{IMUFrequency, madgwickBeta};
+#define gyroMeasError 3.14159265358979 * (10.0f / 180.0f) // gyroscope measurement error in rad/s (shown as 5 deg/s)
+#define beta sqrt(3.0f / 4.0f) * gyroMeasError // compute beta
+
+Algorithms::MadgwickFilter madgwickFilter{beta};
 
 Mat::Matrix<3, 1> MagCal({0, 0, 0});
 Mat::Matrix<3, 1> MagRaw({0, 0, 0});
@@ -60,47 +61,28 @@ uint8_t MadgwickUpdate(const AGMSensorData* sensorData)
 		MagCal = CalibrateMag(MagRaw);
 		GyroCal = CalibrateGyro(GyroRaw);
 
-		Acc = {0, AccCal(0,0), AccCal(1,0), AccCal(2,0)};
-		Q.w = GetW();
-		Q.x = GetX();
-		Q.y = GetY();
-		Q.z = GetZ();
-		Acc = (Q * Acc * Q.Conjugate()) - G;
-		printf("%f	%f	%f	%f\n\r", Acc.x, Acc.y, Acc.z, Acc.Norm());
-		//printf("MAG: %f, %f, %f\n\r",MagCal(0,0),MagCal(1,0),MagCal(2,0));
-		//delta_t = sensorData->SensorTime - prev_time;
-		//GyroCalMean += GyroCal * (delta_t / 1000.0f);
-		//prev_time = sensorData->SensorTime;
-		//GyroRawMean = GyroRawMean * (1.0f - step) + GyroRaw * step;
-		//GyroCalMean = GyroCalMean * (1.0f - step) + GyroCal * step;
-		//float norm = sqrt(MagCal(0,0) * MagCal(0,0) + MagCal(1,0) * MagCal(1,0) + MagCal(2,0) * MagCal(2,0));
-		//printf("Mag: %f,	%f,	%f,	Norm: %f \n\r", MagCal(0,0), MagCal(1,0), MagCal(2,0), norm);
-		//printf("gyro: %f,	%f,	%f,	%f,	%f,	%f\n\r", GyroRawMean(0,0), GyroRawMean(1,0), GyroRawMean(2,0), GyroCalMean(0,0), GyroCalMean(1,0), GyroCalMean(2,0));
-		//printf("%f %f %f, D_t: %f\n\r", GyroCalMean(0,0), GyroCalMean(1,0), GyroCalMean(2,0), delta_t);
-//		madgwick.update(GyroCal(0,0), GyroCal(1,0), GyroCal(2,0),
-//						AccCal(0,0), AccCal(1,0), AccCal(2,0),
-//						MagCal(0,0), MagCal(1,0), MagCal(2,0));
-		//printf("MAG: %f, %f, %f\n\r",MagCal(0,0),MagCal(1,0),MagCal(2,0));
+//		Acc = {0, AccCal(0,0), AccCal(1,0), AccCal(2,0)};
+//		Q.w = GetW();
+//		Q.x = GetX();
+//		Q.y = GetY();
+//		Q.z = GetZ();
+//		Acc = (Q * Acc * Q.Conjugate()) - G;
+//		printf("%f	%f	%f	%f\n\r", Acc.x, Acc.y, Acc.z, Acc.Norm());
+
 		filterUpdate(GyroCal(0,0), GyroCal(1,0), GyroCal(2,0),
 						AccCal(0,0), AccCal(1,0), AccCal(2,0),
 						MagCal(0,0), MagCal(1,0), MagCal(2,0),
 						sensorData->SensorTime / 1000.0f);
+		madgwickFilter.Update(GyroCal(0,0), GyroCal(1,0), GyroCal(2,0),
+								AccCal(0,0), AccCal(1,0), AccCal(2,0),
+								MagCal(0,0), MagCal(1,0), MagCal(2,0),
+								sensorData->SensorTime / 1000.0f);
+		printf("Orig: %f,\t%f,\t%f\t\tMy: %f,\t%f,\t%f\n\r", getRoll(), getPitch(), getYaw(),
+				madgwickFilter.GetRoll(), madgwickFilter.GetPitch(), madgwickFilter.GetYaw());
+//		Quaternion MyQ = madgwickFilter.GetOrientation();
+//		printf("Orig: %f,\t%f,\t%f,\t%f\tMy: %f,\t%f,\t%f,\t%f\n\r", GetW(), GetX(), GetY(), GetZ(),
+//																	MyQ.w, MyQ.x, MyQ.y, MyQ.z);
 		return 1;
 	}
 	return 0;
-}
-
-float MadgwickGetRoll()
-{
-	return madgwick.getRoll();
-}
-
-float MadgwickGetPitch()
-{
-	return madgwick.getPitch();
-}
-
-float MadgwickGetYaw()
-{
-	return madgwick.getYaw();
 }

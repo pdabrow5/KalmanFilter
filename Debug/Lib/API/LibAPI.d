@@ -1,8 +1,9 @@
 Lib/API/LibAPI.o: ../Lib/API/LibAPI.cpp ../Lib/API/LibAPI.h \
  C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/UtilTypes.h \
- ../Lib/API/../Util/Algorithms/MadgwickAHRSclass.h \
  ../Lib/API/../Util/Algorithms/MadgwickOriginal.h \
+ ../Lib/API/../Util/Algorithms/MyMadgwick.hpp \
  C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Quaternion.hpp \
+ C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp \
  C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Platform/inc/calibrate.h \
  C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp \
  ../Core/Inc/logger.h \
@@ -46,9 +47,10 @@ Lib/API/LibAPI.o: ../Lib/API/LibAPI.cpp ../Lib/API/LibAPI.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h
 ../Lib/API/LibAPI.h:
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/UtilTypes.h:
-../Lib/API/../Util/Algorithms/MadgwickAHRSclass.h:
 ../Lib/API/../Util/Algorithms/MadgwickOriginal.h:
+../Lib/API/../Util/Algorithms/MyMadgwick.hpp:
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Quaternion.hpp:
+C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp:
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Platform/inc/calibrate.h:
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp:
 ../Core/Inc/logger.h:

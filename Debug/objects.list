@@ -40,7 +40,6 @@
 "./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_usb.o"
 "./Lib/API/LibAPI.o"
 "./Lib/Platform/src/calibrate.o"
-"./Lib/Util/Algorithms/MadgwickAHRSclass.o"
 "./Lib/Util/Algorithms/MadgwickOriginal.o"
 "./Lib/Util/Algorithms/MyMadgwick.o"
 "./Lib/Util/Math/src/Quaternion.o"

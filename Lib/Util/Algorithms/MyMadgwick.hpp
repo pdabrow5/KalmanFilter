@@ -8,7 +8,6 @@
 #ifndef UTIL_ALGORITHMS_MYMADGWICK_HPP_
 #define UTIL_ALGORITHMS_MYMADGWICK_HPP_
 
-#include "UtilTypes.h"
 #include "Quaternion.hpp"
 #include "Matrix.hpp"
 
@@ -19,7 +18,10 @@ class MadgwickFilter
 {
 public:
 	explicit MadgwickFilter(float beta);
-	void Update(AGMSensorData_t* sensorData);
+	void Update(float gx, float gy, float gz, float ax, float ay, float az, float mx, float my, float mz, float time);
+	void SetBeta(float);
+
+	Mat::Quaternion GetOrientation() const;
 	float GetRoll() const;
 	float GetPitch() const;
 	float GetYaw() const;

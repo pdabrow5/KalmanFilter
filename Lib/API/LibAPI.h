@@ -19,9 +19,6 @@ extern "C"
 
 uint8_t MadgwickInit();
 uint8_t MadgwickUpdate(const AGMSensorData* sensorData);
-float MadgwickGetRoll();
-float MadgwickGetPitch();
-float MadgwickGetYaw();
 
 #ifdef __cplusplus
 }

@@ -45,6 +45,13 @@ Quaternion& Quaternion::operator*=(float f)
 	return *this;
 }
 
+Quaternion& Quaternion::Normalise()
+{
+	float norm = Norm();
+	if(norm != 0.0f) this->operator *=((1.0f / norm));
+	return *this;
+}
+
 Quaternion Quaternion::operator+(const Quaternion& other) const
 {
 	Quaternion result = *this;
@@ -83,6 +90,20 @@ Quaternion Quaternion::Conjugate() const
 	result.y*= -1.0f;
 	result.z*= -1.0f;
 	return result;
+}
+
+Quaternion Quaternion::Normalised() const
+{
+	Quaternion normalised = *this;
+	normalised.Normalise();
+	return normalised;
+}
+
+Quaternion Quaternion::Inversed() const
+{
+	Quaternion conjugate = Conjugate();
+	conjugate.Normalise();
+	return conjugate;
 }
 
 float Quaternion::Norm() const

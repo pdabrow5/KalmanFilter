@@ -15,6 +15,12 @@ typedef struct Vec3_t
 	float x, y, z;
 } Vec3;
 
+typedef struct GNSSSensorData_t
+{
+	Vec3 Pos;
+	float SensorTime;
+} GNSSSensorData;
+
 typedef struct AGMSensorData_t
 {
 	Vec3 Mag;

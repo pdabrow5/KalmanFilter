@@ -3,6 +3,6 @@
 ../Lib/Util/Algorithms/MadgwickOriginal.c:19:7:GetY	4	static
 ../Lib/Util/Algorithms/MadgwickOriginal.c:20:7:GetZ	4	static
 ../Lib/Util/Algorithms/MadgwickOriginal.c:23:6:filterUpdate	208	static
-../Lib/Util/Algorithms/MadgwickOriginal.c:118:7:getRoll	16	static
-../Lib/Util/Algorithms/MadgwickOriginal.c:124:7:getPitch	16	static
-../Lib/Util/Algorithms/MadgwickOriginal.c:130:7:getYaw	16	static
+../Lib/Util/Algorithms/MadgwickOriginal.c:126:7:getRoll	16	static
+../Lib/Util/Algorithms/MadgwickOriginal.c:132:7:getPitch	16	static
+../Lib/Util/Algorithms/MadgwickOriginal.c:138:7:getYaw	16	static

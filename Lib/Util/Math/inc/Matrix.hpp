@@ -21,8 +21,8 @@ class Matrix
 public:
 	using Row = std::array<float, width>;
 	Matrix();
-	explicit Matrix(float val);
-	explicit Matrix(const std::array<float, heigth*width>& values);
+	Matrix(float val);
+	Matrix(const std::array<float, heigth*width>& values);
 
 	inline float& operator()(u_short row, u_short col);
 	inline const float& operator()(u_short row, u_short col) const;

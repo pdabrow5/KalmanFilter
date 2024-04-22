@@ -25,6 +25,7 @@ void filterUpdate(float gx, float gy, float gz, float ax, float ay, float az, fl
 	static float datatime = DELTAT;
 	float deltat = (time - datatime);
 	datatime = time;
+	//printf("Original: %f\n\r", deltat);
 	//LOG("INPUT: %f, %f, %f, %f, %f, %f", mx, my, mz,getRoll(), getPitch(), getYaw());
 	float q1 = q[0], q2 = q[1], q3 = q[2], q4 = q[3];   // short name local variable for readability
 	float norm;
@@ -71,7 +72,7 @@ void filterUpdate(float gx, float gy, float gz, float ax, float ay, float az, fl
 	mx *= norm;
 	my *= norm;
 	mz *= norm;
-
+	//printf("Original: %f\t%f\t%f\n\r", mx, my, mz);
 	// Reference direction of Earth's magnetic field
 	_2q1mx = 2.0f * q1 * mx;
 	_2q1my = 2.0f * q1 * my;
@@ -83,6 +84,7 @@ void filterUpdate(float gx, float gy, float gz, float ax, float ay, float az, fl
 	_2bz = -_2q1mx * q3 + _2q1my * q2 + mz * q1q1 + _2q2mx * q4 - mz * q2q2 + _2q3 * my * q4 - mz * q3q3 + mz * q4q4;
 	_4bx = 2.0f * _2bx;
 	_4bz = 2.0f * _2bz;
+	//printf("Original: %f\t%f\n\r", _2bx, _2bz);
 
 	// Gradient decent algorithm corrective step
 	s1 = -_2q3 * (2.0f * q2q4 - _2q1q3 - ax) + _2q2 * (2.0f * q1q2 + _2q3q4 - ay) - _2bz * q3 * (_2bx * (0.5f - q3q3 - q4q4) + _2bz * (q2q4 - q1q3) - mx) + (-_2bx * q4 + _2bz * q2) * (_2bx * (q2q3 - q1q4) + _2bz * (q1q2 + q3q4) - my) + _2bx * q3 * (_2bx * (q1q3 + q2q4) + _2bz * (0.5f - q2q2 - q3q3) - mz);
@@ -95,7 +97,7 @@ void filterUpdate(float gx, float gy, float gz, float ax, float ay, float az, fl
 	s2 *= norm;
 	s3 *= norm;
 	s4 *= norm;
-
+	///printf("Original: %f\t%f\t%f\t%f\n\r", s1, s2, s3, s4);
 	// Compute rate of change of quaternion
 	qDot1 = 0.5f * (-q2 * gx - q3 * gy - q4 * gz) - beta * s1;
 	qDot2 = 0.5f * (q1 * gx + q3 * gz - q4 * gy) - beta * s2;
@@ -107,6 +109,12 @@ void filterUpdate(float gx, float gy, float gz, float ax, float ay, float az, fl
 	q2 += qDot2 * deltat;
 	q3 += qDot3 * deltat;
 	q4 += qDot4 * deltat;
+//	//DEBUG
+//	q1 = 0.923871f;
+//	q2 = -0.000442f;
+//	q3 = -0.000182f;
+//	q4 = -0.382663f;
+
 	norm = sqrtf(q1 * q1 + q2 * q2 + q3 * q3 + q4 * q4);    // normalise quaternion
 	norm = 1.0f/norm;
 	q[0] = q1 * norm;
