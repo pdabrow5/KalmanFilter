@@ -347,8 +347,9 @@
 #define Bmx160_GYRO_BW_NORMAL_MODE        0x02
 
 #define Bmx160_MAGN_UT_LSB      (0.3F)  ///< Macro for micro tesla (uT) per LSB (1 LSB = 0.1uT) */
-#define Bmx160_MAGN_UT_LSB_XY	(0.03967406f)
-#define Bmx160_MAGN_UT_LSB_Z 	(0.07629627f)
+#define Bmx160_MAGN_UT_LSB_XY	(0.035096f)
+#define Bmx160_MAGN_UT_LSB_Z 	(0.127160f)
+//#define Bmx160_MAGN_UT_LSB_Z 	(0.076296f)
 
 /* Output Data Rate settings */
 /* Accel Output data rate */

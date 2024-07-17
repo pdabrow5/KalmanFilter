@@ -1,0 +1,13 @@
+../Lib/Util/Math/src/Quaternion.cpp:15:13:Mat::Quaternion& Mat::Quaternion::operator+=(const Mat::Quaternion&)	0	static
+../Lib/Util/Math/src/Quaternion.cpp:24:13:Mat::Quaternion& Mat::Quaternion::operator-=(const Mat::Quaternion&)	0	static
+../Lib/Util/Math/src/Quaternion.cpp:39:13:Mat::Quaternion& Mat::Quaternion::operator*=(float)	0	static
+../Lib/Util/Math/src/Quaternion.cpp:55:12:Mat::Quaternion Mat::Quaternion::operator+(const Mat::Quaternion&) const	64	static
+../Lib/Util/Math/src/Quaternion.cpp:62:12:Mat::Quaternion Mat::Quaternion::operator-(const Mat::Quaternion&) const	64	static
+../Lib/Util/Math/src/Quaternion.cpp:69:12:Mat::Quaternion Mat::Quaternion::operator*(const Mat::Quaternion&) const	32	static
+../Lib/Util/Math/src/Quaternion.cpp:33:13:Mat::Quaternion& Mat::Quaternion::operator*=(const Mat::Quaternion&)	8	static
+../Lib/Util/Math/src/Quaternion.cpp:79:12:Mat::Quaternion Mat::Quaternion::operator*(float) const	56	static
+../Lib/Util/Math/src/Quaternion.cpp:86:12:Mat::Quaternion Mat::Quaternion::Conjugate() const	64	static
+../Lib/Util/Math/src/Quaternion.cpp:109:7:float Mat::Quaternion::Norm() const	0	static
+../Lib/Util/Math/src/Quaternion.cpp:48:13:Mat::Quaternion& Mat::Quaternion::Normalise()	8	static
+../Lib/Util/Math/src/Quaternion.cpp:95:12:Mat::Quaternion Mat::Quaternion::Normalised() const	56	static
+../Lib/Util/Math/src/Quaternion.cpp:102:12:Mat::Quaternion Mat::Quaternion::Inversed() const	56	static

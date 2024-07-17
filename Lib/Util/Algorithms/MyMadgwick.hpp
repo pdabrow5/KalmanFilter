@@ -21,7 +21,7 @@ public:
 	void Update(float gx, float gy, float gz, float ax, float ay, float az, float mx, float my, float mz, float time);
 	void SetBeta(float);
 
-	Mat::Quaternion GetOrientation() const;
+	const Mat::Quaternion& GetOrientation() const;
 	float GetRoll() const;
 	float GetPitch() const;
 	float GetYaw() const;

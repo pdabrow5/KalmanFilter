@@ -5,186 +5,101 @@
 #include <array>
 #include <cmath>
 
+#include "Matrix.hpp"
+
 namespace Mat
 {
 
-using u_int = unsigned short;
+template<u_short length>
+class V_Vector;
 
-template <u_int length>
-class Vector
+template<u_short length>
+class H_Vector: public Matrix<1, length>
 {
 public:
-	Vector();
-	explicit Vector(float val);
-	explicit Vector(const std::array<float, length>& values);
+	using Matrix<1, length>::_values;
+	H_Vector();
+	H_Vector(float val);
+	H_Vector(const std::array<float, length>& values);
 
-	inline float& operator()(u_int index);
-	inline const float& operator()(u_int index) const;
+	inline float& operator()(u_short index) {return _values[index];}
+	inline float operator()(u_short index) const {return _values[index];}
+	inline float operator*(const V_Vector<length>& other) const;
 
-	inline bool operator== (const Vector<length>& other) const;
-	inline bool operator!= (const Vector<length>& other) const;
-	inline bool Equals(const Vector<length>& other, float epsilon = 0.000001f) const;
+	inline V_Vector<length> Transpose() const;
 
-	inline Vector<length>& operator+= (const Vector<length>& other);
-	inline Vector<length>& operator+= (float val);
-
-	inline Vector<length>& operator-= (const Vector<length>& other);
-	inline Vector<length>& operator-= (float val);
-
-	inline Vector<length> operator+ (const Vector<length>& other) const;
-	inline Vector<length> operator+ (float val) const;
-
-	inline Vector<length> operator- (const Vector<length>& other) const;
-	inline Vector<length> operator- (float val) const;
-
-	inline Vector<length>& operator*= (float val);
-
-	Vector<length> operator*(float val) const;
-	inline float operator*(const Vector<length>& other) const;
-
-	inline u_int Size() const {return length;}
-
-	inline float Norm() const {float result = 0.0f; std::for_each(_values.begin(), _values.end(), [&result](float n){result += n * n;}); return std::sqrt(result);}
-
-protected:
-	std::array<float, length> _values;
+	float Norm() const;
 };
 
-//IMPLEMENTATION
-
-template <u_int length>
-Vector<length>::Vector() {static_assert(length > 0, "Vector length must be positive!");}
-
-template <u_int length>
-Vector<length>::Vector(float val)
+template<u_short length>
+class V_Vector: public Matrix<length, 1>
 {
-	static_assert(length > 0, "Vector length must be positive!");
-	for(auto &v : _values) v = val;
-}
+public:
+	using Matrix<length, 1>::_values;
+	V_Vector();
+	V_Vector(float val);
+	V_Vector(const std::array<float, length>& values);
 
-template <u_int length>
-Vector<length>::Vector(const std::array<float, length>& values)
-{
-	static_assert(length > 0, "Vector length must be positive!");
-	 _values = values;
-}
+	inline float& operator()(u_short index) {return _values[index];}
+	inline float operator()(u_short index) const {return _values[index];}
 
-template <u_int length>
-float& Vector<length>::operator()(u_int index)
-{
-	return _values[index];
-}
+	inline H_Vector<length> Transpose() const;
 
-template <u_int length>
-const float& Vector<length>::operator()(u_int index) const
-{
-	return _values[index];
-}
+	float Norm() const;
+};
 
-template <u_int length>
-bool Vector<length>::operator==(const Vector<length>& other) const
-{
-	return _values == other._values;
-}
+template <u_short length>
+H_Vector<length>::H_Vector() : Matrix<1, length>() {}
 
-template <u_int length>
-bool Vector<length>::operator!=(const Vector<length>& other) const
-{
-	return _values != other._values;
-}
+template <u_short length>
+H_Vector<length>::H_Vector(float val) : Matrix<1, length>(val) {}
 
-template <u_int length>
-bool Vector<length>::Equals(const Vector<length>& other, float epsilon) const
-{
-	bool result = true;
-	for(u_int i = 0; i < length && result; ++i)
-	{
-		result = result && (fabsf(_values[i] - other._values[i]) < epsilon);
-	}
-	return result;
-}
+template <u_short length>
+H_Vector<length>::H_Vector(const std::array<float, length>& values) : Matrix<1, length>(values) {}
 
-template <u_int length>
-Vector<length>& Vector<length>::operator+=(const Vector<length>& other)
-{
-	for(u_int i = 0; i < _values.size(); ++i) _values[i] += other._values[i];
-	return *this;
-}
-
-template <u_int length>
-Vector<length>& Vector<length>::operator-=(const Vector<length>& other)
-{
-	for(u_int i = 0; i < _values.size(); ++i) _values[i] -= other._values[i];
-	return *this;
-}
-
-template <u_int length>
-Vector<length>& Vector<length>::operator+=(float val)
-{
-	for(u_int i = 0; i < _values.size(); ++i) _values[i] += val;
-	return *this;
-}
-
-template <u_int length>
-Vector<length>& Vector<length>::operator-=(float val)
-{
-	for(u_int i = 0; i < _values.size(); ++i) _values[i] -= val;
-	return *this;
-}
-
-template <u_int length>
-Vector<length> Vector<length>::operator+(const Vector<length>& other) const
-{
-	Vector<length> result = *this;
-	result += other;
-	return result;
-}
-
-template <u_int length>
-Vector<length> Vector<length>::operator-(const Vector<length>& other) const
-{
-	Vector<length> result = *this;
-	result -= other;
-	return result;
-}
-
-template <u_int length>
-Vector<length> Vector<length>::operator+(float val) const
-{
-	Vector<length> result = *this;
-	result += val;
-	return result;
-}
-
-template <u_int length>
-Vector<length> Vector<length>::operator-(float val) const
-{
-	Vector<length> result = *this;
-	result -= val;
-	return result;
-}
-
-template <u_int length>
-Vector<length>& Vector<length>::operator*=(float val)
-{
-	for(u_int i = 0; i < _values.size(); ++i) _values[i] *= val;
-	return *this;
-}
-
-template <u_int length>
-Vector<length> Vector<length>::operator*(float val) const
-{
-	Vector<length> result = *this;
-	result *= val;
-	return result;
-}
-
-template <u_int length>
-float Vector<length>::operator*(const Vector<length>& other) const
+template<u_short length>
+float H_Vector<length>::operator*(const V_Vector<length>& other) const
 {
 	float result = 0.0f;
-	for(u_int i = 0; i < _values.size(); ++i) result += _values[i] * other._values[i];
+	for(u_short i = 0; i < length; ++i){result += _values[i] * other(i);}
 	return result;
+}
+
+template<u_short length>
+V_Vector<length> H_Vector<length>::Transpose() const
+{
+	return V_Vector<length>(_values);
+}
+
+template <u_short length>
+float H_Vector<length>::Norm() const
+{
+	float result = 0.0f;
+	std::for_each(_values.begin(), _values.end(), [&result](float n){result += n * n;});
+	return std::sqrt(result);
+}
+
+template <u_short length>
+V_Vector<length>::V_Vector() : Matrix<length, 1>() {}
+
+template <u_short length>
+V_Vector<length>::V_Vector(float val) : Matrix<length, 1>(val) {}
+
+template <u_short length>
+V_Vector<length>::V_Vector(const std::array<float, length>& values) : Matrix<length, 1>(values) {}
+
+template<u_short length>
+H_Vector<length> V_Vector<length>::Transpose() const
+{
+	return H_Vector<length>(_values);
+}
+
+template <u_short length>
+float V_Vector<length>::Norm() const
+{
+	float result = 0.0f;
+	std::for_each(_values.begin(), _values.end(), [&result](float n){result += n * n;});
+	return std::sqrt(result);
 }
 
 } //namespace Mat

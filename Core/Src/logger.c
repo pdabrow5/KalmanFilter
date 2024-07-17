@@ -5,10 +5,8 @@
  *      Author: pawda
  */
 #include "logger.h"
-#include "usart.h"
 
 #ifdef DEBUG
-
 PUTCHAR_PROTOTYPE
 {
   /* Place your implementation of fputc here */

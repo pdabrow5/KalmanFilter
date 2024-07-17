@@ -17,8 +17,13 @@ extern "C"
 {
 #endif
 
-uint8_t MadgwickInit();
+uint8_t InitAlgorithms(const AGMSensorData* sensorData);
+uint8_t ResetKinematics();
 uint8_t MadgwickUpdate(const AGMSensorData* sensorData);
+
+Vec3 GetPosition();
+Vec3 GetVelocity();
+Vec3 GetAcceleration();
 
 #ifdef __cplusplus
 }

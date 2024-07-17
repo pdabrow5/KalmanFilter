@@ -49,8 +49,12 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
  ../Core/Inc/logger.h \
  ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h743xx.h \
- ../Core/Inc/usart.h ../Core/Inc/main.h \
+ ../Core/Inc/usart.h ../Core/Inc/main.h ../Core/Inc/usart.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../Core/Src/../../Peripherals/BMX160/inc/DFRobot_BMX160.h \
+ ../Core/Src/../../Peripherals/simpleRTK2B/GNSS.h \
  C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/API/LibAPI.h \
  C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/UtilTypes.h \
  ../Core/Src/../../Lib/Util/Algorithms/MadgwickOriginal.h
@@ -107,7 +111,12 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
 ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h743xx.h:
 ../Core/Inc/usart.h:
 ../Core/Inc/main.h:
+../Core/Inc/usart.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
 ../Core/Src/../../Peripherals/BMX160/inc/DFRobot_BMX160.h:
+../Core/Src/../../Peripherals/simpleRTK2B/GNSS.h:
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/API/LibAPI.h:
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/UtilTypes.h:
 ../Core/Src/../../Lib/Util/Algorithms/MadgwickOriginal.h:

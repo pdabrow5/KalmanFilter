@@ -5,12 +5,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../Lib/Util/Math/src/MathUtil.cpp \
 ../Lib/Util/Math/src/Quaternion.cpp 
 
 OBJS += \
+./Lib/Util/Math/src/MathUtil.o \
 ./Lib/Util/Math/src/Quaternion.o 
 
 CPP_DEPS += \
+./Lib/Util/Math/src/MathUtil.d \
 ./Lib/Util/Math/src/Quaternion.d 
 
 
@@ -21,7 +24,7 @@ Lib/Util/Math/src/%.o Lib/Util/Math/src/%.su Lib/Util/Math/src/%.cyclo: ../Lib/U
 clean: clean-Lib-2f-Util-2f-Math-2f-src
 
 clean-Lib-2f-Util-2f-Math-2f-src:
-	-$(RM) ./Lib/Util/Math/src/Quaternion.cyclo ./Lib/Util/Math/src/Quaternion.d ./Lib/Util/Math/src/Quaternion.o ./Lib/Util/Math/src/Quaternion.su
+	-$(RM) ./Lib/Util/Math/src/MathUtil.cyclo ./Lib/Util/Math/src/MathUtil.d ./Lib/Util/Math/src/MathUtil.o ./Lib/Util/Math/src/MathUtil.su ./Lib/Util/Math/src/Quaternion.cyclo ./Lib/Util/Math/src/Quaternion.d ./Lib/Util/Math/src/Quaternion.o ./Lib/Util/Math/src/Quaternion.su
 
 .PHONY: clean-Lib-2f-Util-2f-Math-2f-src
 

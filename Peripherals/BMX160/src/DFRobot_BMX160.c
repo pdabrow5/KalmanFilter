@@ -155,12 +155,13 @@ void Bmx160_getAllData(sBmx160SensorData_t *magn, sBmx160SensorData_t *gyro, sBm
         x = (int16_t) (((uint16_t)data[1] << 8) | data[0]);
         y = (int16_t) (((uint16_t)data[3] << 8) | data[2]);
         z = (int16_t) (((uint16_t)data[5] << 8) | data[4]);
-//        magn->x = x * Bmx160_MAGN_UT_LSB_XY;
-//        magn->y = y * Bmx160_MAGN_UT_LSB_XY;
-//        magn->z = z * Bmx160_MAGN_UT_LSB_Z;
+        //LOG("X: %d, Y: %d, Z: %d", x, y, z);
         magn->x = x * Bmx160_MAGN_UT_LSB_XY;
-		magn->y = y * Bmx160_MAGN_UT_LSB_XY;
-		magn->z = z * Bmx160_MAGN_UT_LSB_Z;
+        magn->y = y * Bmx160_MAGN_UT_LSB_XY;
+        magn->z = z * Bmx160_MAGN_UT_LSB_Z;
+//        magn->x = x * Bmx160_MAGN_UT_LSB_XY;
+//		magn->y = y * Bmx160_MAGN_UT_LSB_XY;
+//		magn->z = z * Bmx160_MAGN_UT_LSB_XY;
         magn->sensortime = time_f;
     }
     if(gyro){

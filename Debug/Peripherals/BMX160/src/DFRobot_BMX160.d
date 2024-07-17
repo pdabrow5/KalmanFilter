@@ -41,7 +41,8 @@ Peripherals/BMX160/src/DFRobot_BMX160.o: \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
  ../Core/Inc/main.h ../Core/Inc/i2c.h ../Core/Inc/main.h \
  ../Core/Inc/logger.h \
- ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h743xx.h
+ ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h743xx.h \
+ ../Core/Inc/usart.h
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Peripherals/BMX160/inc/DFRobot_BMX160.h:
 ../Peripherals/BMX160/src/../inc/common_porting.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
@@ -86,3 +87,4 @@ C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Peripherals/BMX160/inc
 ../Core/Inc/main.h:
 ../Core/Inc/logger.h:
 ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h743xx.h:
+../Core/Inc/usart.h:

@@ -1,0 +1,13 @@
+../Peripherals/simpleRTK2B/GNSS.c:43:6:GNSS_Init	1
+../Peripherals/simpleRTK2B/GNSS.c:66:6:GNSS_ParseBuffer	12
+../Peripherals/simpleRTK2B/GNSS.c:92:6:GNSS_GetUniqID	1
+../Peripherals/simpleRTK2B/GNSS.c:102:6:GNSS_GetNavigatorData	1
+../Peripherals/simpleRTK2B/GNSS.c:112:6:GNSS_GetPOSLLHData	1
+../Peripherals/simpleRTK2B/GNSS.c:122:6:GNSS_GetPVTData	1
+../Peripherals/simpleRTK2B/GNSS.c:134:6:GNSS_ParseUniqID	2
+../Peripherals/simpleRTK2B/GNSS.c:144:6:GNSS_SetMode	11
+../Peripherals/simpleRTK2B/GNSS.c:172:6:GNSS_ParsePVTData	9
+../Peripherals/simpleRTK2B/GNSS.c:235:6:GNSS_ParseNavigatorData	1
+../Peripherals/simpleRTK2B/GNSS.c:251:6:GNSS_ParsePOSLLHData	7
+../Peripherals/simpleRTK2B/GNSS.c:289:6:GNSS_LoadConfig	1
+../Peripherals/simpleRTK2B/GNSS.c:311:9:GNSS_Checksum	1

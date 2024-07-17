@@ -9,12 +9,16 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include Peripherals/BMI160/src/subdir.mk
+-include Peripherals/BMX160/src/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/subdir.mk
--include Lib/Util/src/subdir.mk
+-include Lib/Util/Math/src/subdir.mk
+-include Lib/Util/Algorithms/ExtendedKalman/subdir.mk
+-include Lib/Util/Algorithms/subdir.mk
+-include Lib/Platform/src/subdir.mk
+-include Lib/API/subdir.mk
 -include Drivers/STM32H7xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk

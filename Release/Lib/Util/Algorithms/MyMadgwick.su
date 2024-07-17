@@ -1,0 +1,7 @@
+../Lib/Util/Algorithms/MyMadgwick.cpp:22:1:Algorithms::MadgwickFilter::MadgwickFilter(float)	0	static
+../Lib/Util/Algorithms/MyMadgwick.cpp:49:19:const Mat::Quaternion& Algorithms::MadgwickFilter::GetOrientation() const	0	static
+../Lib/Util/Algorithms/MyMadgwick.cpp:54:7:float Algorithms::MadgwickFilter::GetRoll() const	8	static
+../Lib/Util/Algorithms/MyMadgwick.cpp:60:7:float Algorithms::MadgwickFilter::GetPitch() const	8	static
+../Lib/Util/Algorithms/MyMadgwick.cpp:66:7:float Algorithms::MadgwickFilter::GetYaw() const	8	static
+../Lib/Util/Algorithms/MyMadgwick.cpp:72:14:Mat::Matrix<4, 6> Algorithms::Jgbt(const Mat::Quaternion&, const Mat::Quaternion&)	24	static
+../Lib/Util/Algorithms/MyMadgwick.cpp:27:6:void Algorithms::MadgwickFilter::Update(float, float, float, float, float, float, float, float, float, float)	464	static

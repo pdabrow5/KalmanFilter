@@ -37,6 +37,7 @@ Core/Startup \
 Drivers/STM32H7xx_HAL_Driver/Src \
 Lib/API \
 Lib/Platform/src \
+Lib/Util/Algorithms/ExtendedKalman \
 Lib/Util/Algorithms \
 Lib/Util/Math/src \
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 \
@@ -44,4 +45,5 @@ Middlewares/Third_Party/FreeRTOS/Source \
 Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F \
 Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang \
 Peripherals/BMX160/src \
+Peripherals/simpleRTK2B \
 

@@ -9,7 +9,7 @@
 namespace Mat
 {
 
-using u_short = unsigned char;
+using u_short = unsigned short;
 using u_int = unsigned int;
 
 /// @brief Pair contatining Matrix dimensions: Heigth and Width
@@ -25,7 +25,7 @@ public:
 	Matrix(const std::array<float, heigth*width>& values);
 
 	inline float& operator()(u_short row, u_short col);
-	inline const float& operator()(u_short row, u_short col) const;
+	inline float operator()(u_short row, u_short col) const;
 
 	inline bool operator== (const Matrix<heigth, width>& other) const;
 	inline bool operator!= (const Matrix<heigth, width>& other) const;
@@ -52,12 +52,24 @@ public:
 	template <u_short other_width>
 	void Multiply(const Matrix<width, other_width>& other, Matrix<heigth, other_width>& result) const;
 
+	float VecNorm() const;
+	Matrix<width, heigth> Transposed() const;
 	inline u_int Size() {return heigth * width;}
 	inline const MatShape& Shape() const;
 	static constexpr MatShape shape{heigth, width};
-private:
+protected:
 	std::array<float, heigth*width> _values;
 };
+
+template<u_short size>
+Matrix<size, size> Eye(float val = 1.0f)
+{
+	static_assert(size > 0, "Matrix size must be positive!");
+	Matrix<size, size> result{0.0f};
+	for(u_short i = 0; i < size; ++i)
+		result(i, i) = val;
+	return result;
+}
 
 template<u_int length>
 float Multiply_rows(const std::array<float, length>& A, const std::array<float, length>& B)
@@ -88,7 +100,7 @@ float& Matrix<heigth, width>::operator()(u_short row, u_short col)
 }
 
 template <u_short heigth, u_short width>
-const float& Matrix<heigth, width>::operator()(u_short row, u_short col) const
+float Matrix<heigth, width>::operator()(u_short row, u_short col) const
 {
 	u_int index = width * row + col;
 	return _values[index];
@@ -216,22 +228,32 @@ void Matrix<heigth, width>::Multiply(const Matrix<width, other_width>& other, Ma
 
 	for(u_short row = 0; row < heigth; ++row)
 		for(u_short col = 0; col < other_width; ++col)
-			result(row, col) = Multiply_rows(this_rows[row], other_columns[col]);
+			result(row, col) = Multiply_rows<width>(this_rows[row], other_columns[col]);
+}
+
+template <u_short heigth, u_short width>
+float Matrix<heigth, width>::VecNorm() const
+{
+	float result = 0.0f;
+	for(auto v : _values)
+		result += (v * v);
+	return sqrt(result);
+}
+
+template <u_short heigth, u_short width>
+Matrix<width, heigth> Matrix<heigth, width>::Transposed() const
+{
+	Matrix<width, heigth> result;
+	for(u_short r = 0; r < width; ++r)
+		for(u_short c = 0; c < heigth; ++c)
+			result(r, c) = operator()(c, r);
+	return result;
 }
 
 template <u_short heigth, u_short width>
 const MatShape& Matrix<heigth, width>::Shape() const
 {
 	return Matrix<heigth, width>::shape;
-}
-
-template <u_short size>
-Matrix <size, size> Eye(float val)
-{
-	Matrix <size, size> result{};
-	for(u_short i = 0; i < size; ++i)
-		result(i, i) = val;
-	return result;
 }
 
 } //namespace Mat

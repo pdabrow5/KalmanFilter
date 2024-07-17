@@ -1,0 +1,8 @@
+../Lib/Util/Algorithms/MadgwickOriginal.c:17:7:GetW	1
+../Lib/Util/Algorithms/MadgwickOriginal.c:18:7:GetX	1
+../Lib/Util/Algorithms/MadgwickOriginal.c:19:7:GetY	1
+../Lib/Util/Algorithms/MadgwickOriginal.c:20:7:GetZ	1
+../Lib/Util/Algorithms/MadgwickOriginal.c:23:6:filterUpdate	3
+../Lib/Util/Algorithms/MadgwickOriginal.c:126:7:getRoll	1
+../Lib/Util/Algorithms/MadgwickOriginal.c:132:7:getPitch	1
+../Lib/Util/Algorithms/MadgwickOriginal.c:138:7:getYaw	1

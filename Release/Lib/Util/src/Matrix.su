@@ -1,2 +1,0 @@
-../Lib/Util/src/Matrix.cpp:10:5:static int Class::Foo()	0	static
-../Lib/Util/src/Matrix.cpp:15:5:static int Class::Moo()	0	static

@@ -16,8 +16,8 @@ using namespace Mat;
 namespace Algorithms
 {
 
-Matrix<4, 6> Jgbt(const Quaternion& q, const Quaternion& b);
-Matrix<6, 1> fgb(const Quaternion& q, const Quaternion& a, const Quaternion& b, const Quaternion& m);
+inline Matrix<4, 6> Jgbt(const Quaternion& q, const Quaternion& b);
+inline Matrix<6, 1> fgb(const Quaternion& q, const Quaternion& a, const Quaternion& b, const Quaternion& m);
 
 MadgwickFilter::MadgwickFilter(float beta): _beta(beta)
 {
@@ -39,19 +39,14 @@ void MadgwickFilter::Update(float gx, float gy, float gz, float ax, float ay, fl
 	Quaternion Eh = _q * Sm * _q.Inversed();
 	Quaternion Eb{0.0f, 0.0f, 0.0f, 0.0f};
 	Eb.x = sqrt(Eh.x*Eh.x + Eh.y*Eh.y); Eb.z = Eh.z;
-	//printf("Myfilter: %f\t%f\n\r", Eb.x, Eb.z);
-	//printf("Myfilter: %f\t%f\t%f\n\r", Sm.x, Sm.y, Sm.z);
-	//printf("Myfilter: bx: %f,\tbz: %f\n\r", Eb.x, Eb.z);
 	auto Jgbt_fgb = Jgbt(_q, Eb) * fgb(_q, Sa, Eb * 0.5, Sm);
 	Quaternion qJgbt_fgb{Jgbt_fgb(0,0), Jgbt_fgb(1,0), Jgbt_fgb(2,0), Jgbt_fgb(3,0)};
 	qJgbt_fgb.Normalise();
-	//printf("Myfilter: %f\t%f\t%f\t%f\n\r", qJgbt_fgb.w, qJgbt_fgb.x, qJgbt_fgb.y, qJgbt_fgb.z);
 	_q = _q + (q_wt - _beta*qJgbt_fgb) * deltat;
-	//_q = {0.923871f, -0.000442f, -0.000182f, -0.382663f}; ///DEBUG
 	_q.Normalise();
 }
 
-Quaternion MadgwickFilter::GetOrientation() const
+const Quaternion& MadgwickFilter::GetOrientation() const
 {
 	return _q;
 }
