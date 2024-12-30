@@ -47,7 +47,7 @@ const Matrix<4,4>& AHRSKalman::GetNoiseCovariance() const
 	return _P;
 }
 
-void AHRSKalman::InitialiseKalman(const Matrix<3, 1>& acc, const Matrix<3, 1>& mag)
+void AHRSKalman::InitialiseKalman(const Matrix<3, 1>& acc, const Matrix<3, 1>& mag, float time)
 {
 	float ax{acc(0,0)}, ay{acc(1,0)}, az{acc(2,0)};
 	float mx{mag(0,0)}, my{mag(1,0)}, mz{mag(2,0)};
@@ -73,6 +73,8 @@ void AHRSKalman::InitialiseKalman(const Matrix<3, 1>& acc, const Matrix<3, 1>& m
 	_X.x = 0.5f * sgn(amz - ay) * sqrt(amax - amy - az + 1.0f);
 	_X.y = 0.5f * sgn(ax - amaz) * sqrt(amy - amax - az + 1.0f);
 	_X.z = 0.5f * sgn(amz - ay) * sqrt(az - amax - amy + 1.0f);
+	_lastUpdateTime = time;
+	_lastCorrectionTime = time;
 }
 
 void AHRSKalman::UpdateState(const Matrix<3, 1>& U, float time)
@@ -200,6 +202,24 @@ void AHRSKalman::CorrectStateAcc(const Matrix<3, 1>& acc, float time)
 	add.w = res(0,0); add.x = res(1,0); add.y = res(2,0); add.z = res(3,0);
 	_X = _X + add;
 	_P = (I - K*H)*_P;
+}
+
+float AHRSKalman::GetRoll() const
+{
+	float roll = atan2(2.0f * (_X.w * _X.x + _X.y * _X.z), _X.w * _X.w - _X.x * _X.x - _X.y * _X.y + _X.z * _X.z);
+	return roll * 57.29578f;
+}
+
+float AHRSKalman::GetPitch() const
+{
+	float pitch = -asin(2.0f * (_X.x * _X.z - _X.w * _X.y));
+	return pitch * 57.29578f;
+}
+
+float AHRSKalman::GetYaw() const
+{
+	float yaw = atan2(2.0f * (_X.x * _X.y + _X.w * _X.z), _X.w * _X.w + _X.x * _X.x - _X.y * _X.y - _X.z * _X.z);
+	return yaw * 57.29578f + 180.0f;
 }
 
 }//namespace Algorithms

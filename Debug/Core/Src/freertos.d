@@ -56,6 +56,7 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  ../Core/Src/../../Peripherals/BMX160/inc/DFRobot_BMX160.h \
  ../Core/Src/../../Peripherals/simpleRTK2B/GNSS.h \
  C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/API/LibAPI.h \
+ C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/API/../../Peripherals/simpleRTK2B/GNSS.h \
  C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/UtilTypes.h \
  ../Core/Src/../../Lib/Util/Algorithms/MadgwickOriginal.h
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
@@ -118,5 +119,6 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
 ../Core/Src/../../Peripherals/BMX160/inc/DFRobot_BMX160.h:
 ../Core/Src/../../Peripherals/simpleRTK2B/GNSS.h:
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/API/LibAPI.h:
+C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/API/../../Peripherals/simpleRTK2B/GNSS.h:
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/UtilTypes.h:
 ../Core/Src/../../Lib/Util/Algorithms/MadgwickOriginal.h:

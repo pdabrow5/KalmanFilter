@@ -5,13 +5,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp 
+../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp \
+../Lib/Util/Algorithms/ExtendedKalman/OrientationEKF.cpp \
+../Lib/Util/Algorithms/ExtendedKalman/VelocityEKF.cpp 
 
 OBJS += \
-./Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.o 
+./Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.o \
+./Lib/Util/Algorithms/ExtendedKalman/OrientationEKF.o \
+./Lib/Util/Algorithms/ExtendedKalman/VelocityEKF.o 
 
 CPP_DEPS += \
-./Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.d 
+./Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.d \
+./Lib/Util/Algorithms/ExtendedKalman/OrientationEKF.d \
+./Lib/Util/Algorithms/ExtendedKalman/VelocityEKF.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -21,7 +27,7 @@ Lib/Util/Algorithms/ExtendedKalman/%.o Lib/Util/Algorithms/ExtendedKalman/%.su L
 clean: clean-Lib-2f-Util-2f-Algorithms-2f-ExtendedKalman
 
 clean-Lib-2f-Util-2f-Algorithms-2f-ExtendedKalman:
-	-$(RM) ./Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cyclo ./Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.d ./Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.o ./Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.su
+	-$(RM) ./Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cyclo ./Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.d ./Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.o ./Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.su ./Lib/Util/Algorithms/ExtendedKalman/OrientationEKF.cyclo ./Lib/Util/Algorithms/ExtendedKalman/OrientationEKF.d ./Lib/Util/Algorithms/ExtendedKalman/OrientationEKF.o ./Lib/Util/Algorithms/ExtendedKalman/OrientationEKF.su ./Lib/Util/Algorithms/ExtendedKalman/VelocityEKF.cyclo ./Lib/Util/Algorithms/ExtendedKalman/VelocityEKF.d ./Lib/Util/Algorithms/ExtendedKalman/VelocityEKF.o ./Lib/Util/Algorithms/ExtendedKalman/VelocityEKF.su
 
 .PHONY: clean-Lib-2f-Util-2f-Algorithms-2f-ExtendedKalman
 

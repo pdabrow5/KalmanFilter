@@ -101,8 +101,6 @@ void Error_Handler(void);
 #define RMII_TXD0_GPIO_Port GPIOG
 #define SWO_Pin GPIO_PIN_3
 #define SWO_GPIO_Port GPIOB
-#define USR_LED2_Pin GPIO_PIN_7
-#define USR_LED2_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

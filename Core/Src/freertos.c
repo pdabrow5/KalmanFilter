@@ -67,6 +67,8 @@ int currStep = 0;
 volatile int inter_flag = 0;
 volatile int INTERRUPTS = 0;
 BaseType_t GiveSemaphoreResult = 0;
+
+HAL_StatusTypeDef uart_result;
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -110,31 +112,31 @@ const osSemaphoreAttr_t GNNS_UART_INTERRUPT_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-void GetGNSS()
-{
-	GNSS_GetUniqID(&GNSS_Handle);
-	GNSS_ParseBuffer(&GNSS_Handle);
-	osDelay(250);
-	GNSS_GetPVTData(&GNSS_Handle);
-	GNSS_ParseBuffer(&GNSS_Handle);
-	LOG("Buffer: %d", GNSS_Handle.uartWorkingBuffer[0]);
-	LOG("Day: %d-%d-%d \r\n", GNSS_Handle.day, GNSS_Handle.month,GNSS_Handle.year);
-	LOG("Time: %d:%d:%d \r\n", GNSS_Handle.hour, GNSS_Handle.min,GNSS_Handle.sec);
-	LOG("Status of fix: %d \r\n", GNSS_Handle.fixType);
-	LOG("Latitude: %f \r\n", GNSS_Handle.fLat);
-	LOG("Longitude: %f \r\n",(float) GNSS_Handle.lon / 10000000.0);
-	LOG("Height above ellipsoid: %d \r\n", GNSS_Handle.height);
-	LOG("Height above mean sea level: %d \r\n", GNSS_Handle.hMSL);
-	LOG("Ground Speed (2-D): %d \r\n", GNSS_Handle.gSpeed);
-	LOG("Unique ID: %04X %04X %04X %04X %04X %04X\n\r",
-	GNSS_Handle.uniqueID[0], GNSS_Handle.uniqueID[1],
-	GNSS_Handle.uniqueID[2], GNSS_Handle.uniqueID[3],
-	GNSS_Handle.uniqueID[4], GNSS_Handle.uniqueID[5]);
-}
+//void GetGNSS()
+//{
+//	GNSS_GetUniqID(&GNSS_Handle);
+//	GNSS_ParseBuffer(&GNSS_Handle);
+//	osDelay(250);
+//	GNSS_GetPVTData(&GNSS_Handle);
+//	GNSS_ParseBuffer(&GNSS_Handle);
+//	LOG("Buffer: %d", GNSS_Handle.uartWorkingBuffer[0]);
+//	LOG("Day: %d-%d-%d \r\n", GNSS_Handle.day, GNSS_Handle.month,GNSS_Handle.year);
+//	LOG("Time: %d:%d:%d \r\n", GNSS_Handle.hour, GNSS_Handle.min,GNSS_Handle.sec);
+//	LOG("Status of fix: %d \r\n", GNSS_Handle.fixType);
+//	LOG("Latitude: %f \r\n", GNSS_Handle.fLat);
+//	LOG("Longitude: %f \r\n",(float) GNSS_Handle.lon / 10000000.0);
+//	LOG("Height above ellipsoid: %d \r\n", GNSS_Handle.height);
+//	LOG("Height above mean sea level: %d \r\n", GNSS_Handle.hMSL);
+//	LOG("Ground Speed (2-D): %d \r\n", GNSS_Handle.gSpeed);
+//	LOG("Unique ID: %04X %04X %04X %04X %04X %04X\n\r",
+//	GNSS_Handle.uniqueID[0], GNSS_Handle.uniqueID[1],
+//	GNSS_Handle.uniqueID[2], GNSS_Handle.uniqueID[3],
+//	GNSS_Handle.uniqueID[4], GNSS_Handle.uniqueID[5]);
+//}
 
-void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart)
+void DelayFunction(uint16_t ms)
 {
-	LOG("HALF");
+	osDelay(ms);
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
@@ -149,11 +151,52 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
-	inter_flag = Size;
-	++INTERRUPTS;
-	//xTaskResumeFromISR(ReceiveGNSSDataHandle);
-	xSemaphoreGiveFromISR(GNNS_UART_INTERRUPTHandle, &GiveSemaphoreResult);
-	//HAL_UARTEx_ReceiveToIdle_DMA(&huart2, GNSS_Handle.uartWorkingBuffer, 10);
+	if(huart->Instance == USART1)
+	{
+		inter_flag = Size;
+		++INTERRUPTS;
+		xSemaphoreGiveFromISR(GNNS_UART_INTERRUPTHandle, &GiveSemaphoreResult);
+	}
+}
+
+void Receive_IT()
+{
+	uart_result = HAL_UART_Receive_IT(GNSS_Handle.huart, GNSS_Handle.uartWorkingBuffer, 421);
+	if(uart_result != 0) LOG("Receive_IT Status: %d", uart_result);
+}
+
+void Receive_IT_IDLE()
+{
+	uart_result = HAL_UARTEx_ReceiveToIdle_IT(GNSS_Handle.huart, GNSS_Handle.uartWorkingBuffer, sizeof(GNSS_Handle.uartWorkingBuffer));
+	if(uart_result != 0) LOG("Receive_IT_IDLE Status: %d", uart_result);
+}
+
+void AskPvtReceive_IT_IDLE()
+{
+	LOG("Send PVT querry");
+	uart_result = HAL_UART_Transmit(GNSS_Handle.huart, getPVTData, sizeof(getPVTData) / sizeof(uint8_t), 500);
+	if(uart_result != 0) LOG("HAL_UART_Transmit Status: %d", uart_result);
+	LOG("Waiting for response");
+	uart_result = HAL_UARTEx_ReceiveToIdle_IT(GNSS_Handle.huart, GNSS_Handle.uartWorkingBuffer, 100);
+	if(uart_result != 0) LOG("Receive_IT_IDLE Status: %d", uart_result);
+}
+
+void Receive_DMA()
+{
+	uart_result = HAL_UART_Receive_DMA(GNSS_Handle.huart, GNSS_Handle.uartWorkingBuffer, 10);
+	if(uart_result != 0) LOG("Receive_DMA Status: %d", uart_result);
+}
+
+void Receive_DMA_IDLE()
+{
+	uart_result = 	HAL_UARTEx_ReceiveToIdle_DMA(GNSS_Handle.huart, GNSS_Handle.uartWorkingBuffer, 10);
+	if(uart_result != 0) LOG("Receive_DMA_IDLE Status: %d", uart_result);
+}
+
+void Ask_For_PVT()
+{
+	uart_result = HAL_UART_Transmit(GNSS_Handle.huart, getPVTData, sizeof(getPVTData) / sizeof(uint8_t), 500);
+	if(uart_result != 0) LOG("HAL_UART_Transmit Status: %d", uart_result);
 }
 /* USER CODE END FunctionPrototypes */
 
@@ -170,15 +213,8 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-	Bmx160_init();
+//		Bmx160_init();
 	LOG("BMX INIT");
-	GNSS_Init(&GNSS_Handle, &huart2);
-	LOG("GNSS INIT");
-	DelayUs(1000);
-	LOG("Buffer: %d", GNSS_Handle.uartWorkingBuffer[0]);
-	LOG("GNSS LOAD CONFIG");
-	GNSS_LoadConfig(&GNSS_Handle);
-	LOG("Buffer: %d", GNSS_Handle.uartWorkingBuffer[0]);
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -239,15 +275,17 @@ void StartDefaultTask(void *argument)
 	if(HAL_GPIO_ReadPin(UserButton_GPIO_Port, UserButton_Pin))
 	{
 		LOG("PUSHED BUTTON");
-		GNSS_GetUniqID(&GNSS_Handle);
+		//GNSS_GetUniqID(&GNSS_Handle);
 		if(flag == 0)
 		{
-			HAL_UART_Receive_DMA(&huart2, GNSS_Handle.uartWorkingBuffer, 10);
+			LOG("Receive DMA");
+			Receive_DMA();
 			flag = 1;
 		}
 		else
 		{
-			HAL_UART_Receive_IT(GNSS_Handle.huart, GNSS_Handle.uartWorkingBuffer, 92);
+			LOG("Receive IT");
+			Receive_IT();
 			flag = 0;
 		}
 		//ResetKinematics();
@@ -275,11 +313,11 @@ void StartDefaultTask(void *argument)
 //		//printf("Raw:0,0,0,0,0,0,%d,%d,%d\n\r", imx, imy, imz);
 //		printf("%f %f %f\n\r", mx, my, mz);
 	}
-	Pos = GetPosition();
-	Acc = GetAcceleration();
-	Vel = GetVelocity();
+//	Pos = GetPosition();
+//	Acc = GetAcceleration();
+//	Vel = GetVelocity();
 	//LOG("Vel: %f, \t%f, \t%f\tPos: %f, \t%f, \t%f", Vel.x, Vel.y, Vel.z, Pos.x, Pos.y, Pos.z);
-	LOG("INTERRUPTS: %d, inter_flag: %d", INTERRUPTS, inter_flag);
+	//LOG("INTERRUPTS: %d, inter_flag: %d, UART state: %d", INTERRUPTS, inter_flag, GNSS_Handle.huart->RxState);
 	//GNSS_GetPVTData(&GNSS_Handle);
 	//GNSS_GetPVTData(&GNSS_Handle);
     osDelay(1000);
@@ -298,8 +336,8 @@ void StartAccMeassureTask(void *argument)
 {
   /* USER CODE BEGIN StartAccMeassureTask */
   /* Infinite loop */
-	//Bmx160_init();
-	//LOG("After INIT");
+	Bmx160_init();
+	LOG("After INIT");
 	Bmx160_getAllData(&Omagn, &Ogyro, &Oaccel);
 	SensorData.Acc.x = Oaccel.x;
 	SensorData.Acc.y = Oaccel.y;
@@ -330,7 +368,7 @@ void StartAccMeassureTask(void *argument)
 //		printf("%f %f %f\n\r", (sum_x/((float)(steps))), (sum_y/((float)(steps))), (sum_z/((float)(steps))));
 //		sum_x = 0.0f; sum_y = 0.0f; sum_z = 0.0f;
 //	}
-	//Bmx160_getAllData(&Omagn, &Ogyro, &Oaccel);
+	Bmx160_getAllData(&Omagn, &Ogyro, &Oaccel);
 	SensorData.Acc.x = Oaccel.x;
 	SensorData.Acc.y = Oaccel.y;
 	SensorData.Acc.z = Oaccel.z;
@@ -341,17 +379,19 @@ void StartAccMeassureTask(void *argument)
 	SensorData.Mag.y = Omagn.y;
 	SensorData.Mag.z = Omagn.z;
 	SensorData.SensorTime = Omagn.sensortime;
-	//MadgwickUpdate(&SensorData);
-	int mx = 0;
-	int my = 0;
-	int mz = 0;
-	mx = Omagn.x * 10.0f;
-	my = Omagn.y * 10.0f;
-	mz = Omagn.z * 10.0f;
-	//LOG("Raw:0,0,0,0,0,0,%d,%d,%d\n\r", mx, my, mz);
-	//GNSS_GetUniqID(&GNSS_Handle);
-	//HAL_UART_Receive_IT(GNSS_Handle.huart, GNSS_Handle.uartWorkingBuffer, 92);
-	osDelay(50);
+	MadgwickUpdate(&SensorData);
+//	int mx = 0;
+//	int my = 0;
+//	int mz = 0;
+//	mx = Omagn.x * 10.0f;
+//	my = Omagn.y * 10.0f;
+//	mz = Omagn.z * 10.0f;
+//	//LOG("Raw:0,0,0,0,0,0,%d,%d,%d\n\r", mx, my, mz);
+//	//LOG("Raw:%f,%f,%f,%f,%f,%f,%f,%f,%f\n\r",
+//			SensorData.Acc.x, SensorData.Acc.y, SensorData.Acc.z,
+//			SensorData.Gyro.x, SensorData.Gyro.y, SensorData.Gyro.z,
+//			SensorData.Mag.x, SensorData.Mag.y, SensorData.Mag.z);
+	osDelay(1);
 
   }
   /* USER CODE END StartAccMeassureTask */
@@ -368,16 +408,22 @@ void StartReceiveGNSSDataTask(void *argument)
 {
   /* USER CODE BEGIN StartReceiveGNSSDataTask */
   /* Infinite loop */
-  //GNSS_GetPVTData(&GNSS_Handle);
-	//GNSS_GetUniqID(&GNSS_Handle);
-	//GNSS_GetUniqID(&GNSS_Handle);
-	//GNSS_GetUniqID(&GNSS_Handle);
-	//GNSS_GetUniqID(&GNSS_Handle);
-	HAL_UART_Receive_DMA(GNSS_Handle.huart, GNSS_Handle.uartWorkingBuffer, 92);
+	LOG("GNSS INIT");
+	GNSS_Init(&GNSS_Handle, &huart1, DelayFunction);
+	osDelay(1000);
+	LOG("GNSS LOAD CONFIG");
+	//GNSS_LoadConfig(&GNSS_Handle);
+	LOG("GNSS CONFIG LOADED!!!");
+	xSemaphoreTake(GNNS_UART_INTERRUPTHandle, portMAX_DELAY);
   for(;;)
   {
+	HAL_UART_Transmit_DMA(GNSS_Handle.huart, getPVTData,
+			sizeof(getPVTData) / sizeof(uint8_t));
+    Receive_IT_IDLE();
+	//AskPvtReceive_IT_IDLE();
+	LOG("Waiting for semaphore...");
 	xSemaphoreTake(GNNS_UART_INTERRUPTHandle, portMAX_DELAY);
-	LOG("");
+	LOG("Got into loop, no.%d", INTERRUPTS);
 	if(inter_flag == 0)
 	{
 		LOG("NORMAL GNSS INTERRUPT[%d]!!!", INTERRUPTS);
@@ -386,19 +432,26 @@ void StartReceiveGNSSDataTask(void *argument)
 	{
 		LOG("IDLE GNSS INTERRUPT[%d], SIZE: %d", INTERRUPTS, inter_flag);
 	}
-	printf("\n\r");
-	printf("\n\r");
-	for(int i = 0; i < sizeof(GNSS_Handle.uartWorkingBuffer); ++i)
-	{
-		printf("%02x", GNSS_Handle.uartWorkingBuffer[i]);
-	}
-	printf("\n\r");
-	printf("\n\r");
+
+//	printf("\n\n");
+//	uint16_t sizeofTable = inter_flag == 0 ? sizeof(GNSS_Handle.uartWorkingBuffer) : inter_flag;
+//	for(uint16_t size = 0; size < sizeofTable; ++size)
+//		printf("%x ", GNSS_Handle.uartWorkingBuffer[size]);
+//	printf("\n\n\r");
+    //printf("%s \n\r", GNSS_Handle.uartWorkingBuffer);
+	//GNSS_ParsePVTData(&GNSS_Handle);
+	GNSS_ParsePVTDataPTR(&GNSS_Handle);
+	LOG("Buffer: %d", GNSS_Handle.uartWorkingBuffer[0]);
+	LOG("Day: %d-%d-%d \r\n", GNSS_Handle.day, GNSS_Handle.month,GNSS_Handle.year);
+	LOG("Time: %d:%d:%d \r\n", GNSS_Handle.hour, GNSS_Handle.min,GNSS_Handle.sec);
+	LOG("Status of fix: %d \r\n", GNSS_Handle.fixType);
+	LOG("Latitude: %f \r\n", GNSS_Handle.fLat);
+	LOG("Longitude: %f \r\n",(float) GNSS_Handle.lon / 10000000.0);
+	LOG("Height above ellipsoid: %d \r\n", GNSS_Handle.height);
+	LOG("Height above mean sea level: %d \r\n", GNSS_Handle.hMSL);
+	LOG("Ground Speed (2-D): %d \r\n", GNSS_Handle.gSpeed);
 	LOG("");
-	HAL_UART_Receive_DMA(GNSS_Handle.huart, GNSS_Handle.uartWorkingBuffer, 92);
-	//GNSS_GetPVTData(&GNSS_Handle);
-	//GNSS_GetUniqID(&GNSS_Handle);
-	//vTaskSuspend(ReceiveGNSSDataHandle);
+	OnGNSSData(&GNSS_Handle);
   }
   /* USER CODE END StartReceiveGNSSDataTask */
 }

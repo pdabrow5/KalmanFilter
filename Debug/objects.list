@@ -42,6 +42,8 @@
 "./Lib/API/LibAPI.o"
 "./Lib/Platform/src/calibrate.o"
 "./Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.o"
+"./Lib/Util/Algorithms/ExtendedKalman/OrientationEKF.o"
+"./Lib/Util/Algorithms/ExtendedKalman/VelocityEKF.o"
 "./Lib/Util/Algorithms/FusionAlgorithm.o"
 "./Lib/Util/Algorithms/MadgwickOriginal.o"
 "./Lib/Util/Algorithms/MyMadgwick.o"

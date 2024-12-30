@@ -1,15 +1,10 @@
 Lib/API/LibAPI.o: ../Lib/API/LibAPI.cpp ../Lib/API/LibAPI.h \
- C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/UtilTypes.h \
- ../Lib/API/../Util/Algorithms/MadgwickOriginal.h \
- ../Lib/API/../Util/Algorithms/MyMadgwick.hpp \
- C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Quaternion.hpp \
- C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp \
- ../Lib/API/../Util/Algorithms/FusionAlgorithm.hpp \
- ../Lib/API/../Util/Algorithms/MyMadgwick.hpp \
- ../Lib/API/../Util/Algorithms/ExtendedKalman/AHRSKalman.hpp \
- C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Platform/inc/calibrate.h \
- C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp \
- ../Core/Inc/logger.h \
+ ../Lib/API/../../Peripherals/simpleRTK2B/GNSS.h ../Core/Inc/main.h \
+ ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
+ ../Core/Inc/stm32h7xx_hal_conf.h \
+ ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \
+ ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h \
+ ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h \
  ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h743xx.h \
  ../Drivers/CMSIS/Include/core_cm7.h \
  ../Drivers/CMSIS/Include/cmsis_version.h \
@@ -17,12 +12,6 @@ Lib/API/LibAPI.o: ../Lib/API/LibAPI.cpp ../Lib/API/LibAPI.h \
  ../Drivers/CMSIS/Include/cmsis_gcc.h \
  ../Drivers/CMSIS/Include/mpu_armv7.h \
  ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/system_stm32h7xx.h \
- ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
- ../Core/Inc/stm32h7xx_hal_conf.h \
- ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \
- ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h \
- ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h \
- ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h743xx.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc_ex.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_gpio.h \
@@ -48,21 +37,34 @@ Lib/API/LibAPI.o: ../Lib/API/LibAPI.cpp ../Lib/API/LibAPI.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
- ../Core/Inc/usart.h ../Core/Inc/main.h \
+ C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/UtilTypes.h \
+ ../Lib/API/../Util/Algorithms/MadgwickOriginal.h \
+ ../Lib/API/../Util/Algorithms/MyMadgwick.hpp \
+ C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Quaternion.hpp \
+ C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp \
+ ../Lib/API/../Util/Algorithms/FusionAlgorithm.hpp \
+ ../Lib/API/../Util/Algorithms/MyMadgwick.hpp \
+ ../Lib/API/../Util/Algorithms/ExtendedKalman/VelocityEKF.hpp \
+ ../Lib/API/../Util/Algorithms/ExtendedKalman/EKF.hpp \
  C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Vector.hpp \
- C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp
+ C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp \
+ ../Lib/API/../Util/Algorithms/ExtendedKalman/OrientationEKF.hpp \
+ ../Lib/API/../Util/Algorithms/../../../Peripherals/simpleRTK2B/GNSS.h \
+ ../Lib/API/../Util/Algorithms/ExtendedKalman/AHRSKalman.hpp \
+ C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Platform/inc/calibrate.h \
+ C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp \
+ C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Platform/inc/constants.h \
+ ../Core/Inc/logger.h \
+ ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h743xx.h \
+ ../Core/Inc/usart.h ../Core/Inc/main.h
 ../Lib/API/LibAPI.h:
-C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/UtilTypes.h:
-../Lib/API/../Util/Algorithms/MadgwickOriginal.h:
-../Lib/API/../Util/Algorithms/MyMadgwick.hpp:
-C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Quaternion.hpp:
-C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp:
-../Lib/API/../Util/Algorithms/FusionAlgorithm.hpp:
-../Lib/API/../Util/Algorithms/MyMadgwick.hpp:
-../Lib/API/../Util/Algorithms/ExtendedKalman/AHRSKalman.hpp:
-C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Platform/inc/calibrate.h:
-C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp:
-../Core/Inc/logger.h:
+../Lib/API/../../Peripherals/simpleRTK2B/GNSS.h:
+../Core/Inc/main.h:
+../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
+../Core/Inc/stm32h7xx_hal_conf.h:
+../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h:
+../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h:
+../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h:
 ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h743xx.h:
 ../Drivers/CMSIS/Include/core_cm7.h:
 ../Drivers/CMSIS/Include/cmsis_version.h:
@@ -70,12 +72,6 @@ C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matr
 ../Drivers/CMSIS/Include/cmsis_gcc.h:
 ../Drivers/CMSIS/Include/mpu_armv7.h:
 ../Drivers/CMSIS/Device/ST/STM32H7xx/Include/system_stm32h7xx.h:
-../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
-../Core/Inc/stm32h7xx_hal_conf.h:
-../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h:
-../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h:
-../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h:
-../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h743xx.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc_ex.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_gpio.h:
@@ -101,7 +97,24 @@ C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matr
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h:
-../Core/Inc/usart.h:
-../Core/Inc/main.h:
+C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/UtilTypes.h:
+../Lib/API/../Util/Algorithms/MadgwickOriginal.h:
+../Lib/API/../Util/Algorithms/MyMadgwick.hpp:
+C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Quaternion.hpp:
+C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp:
+../Lib/API/../Util/Algorithms/FusionAlgorithm.hpp:
+../Lib/API/../Util/Algorithms/MyMadgwick.hpp:
+../Lib/API/../Util/Algorithms/ExtendedKalman/VelocityEKF.hpp:
+../Lib/API/../Util/Algorithms/ExtendedKalman/EKF.hpp:
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Vector.hpp:
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp:
+../Lib/API/../Util/Algorithms/ExtendedKalman/OrientationEKF.hpp:
+../Lib/API/../Util/Algorithms/../../../Peripherals/simpleRTK2B/GNSS.h:
+../Lib/API/../Util/Algorithms/ExtendedKalman/AHRSKalman.hpp:
+C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Platform/inc/calibrate.h:
+C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp:
+C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Platform/inc/constants.h:
+../Core/Inc/logger.h:
+../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h743xx.h:
+../Core/Inc/usart.h:
+../Core/Inc/main.h:

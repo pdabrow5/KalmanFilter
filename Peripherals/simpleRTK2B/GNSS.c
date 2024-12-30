@@ -28,6 +28,10 @@
 
 #include "GNSS.h"
 
+#include "cmsis_os.h"
+
+#define UBX_MESSAGE_OFFSET 6
+
 union u_Short uShort;
 union i_Short iShort;
 union u_Long uLong;
@@ -40,8 +44,9 @@ GNSS_StateHandle GNSS_Handle = {};
  * @param GNSS Pointer to main GNSS structure.
  * @param huart Pointer to uart handle.
  */
-void GNSS_Init(GNSS_StateHandle *GNSS, UART_HandleTypeDef *huart) {
+void GNSS_Init(GNSS_StateHandle *GNSS, UART_HandleTypeDef *huart, DelayFunc delayFunc) {
 	GNSS->huart = huart;
+	GNSS->delayFunc = delayFunc;
 	GNSS->year = 0;
 	GNSS->month = 0;
 	GNSS->day = 0;
@@ -120,10 +125,10 @@ void GNSS_GetPOSLLHData(GNSS_StateHandle *GNSS) {
  * @param GNSS Pointer to main GNSS structure.
  */
 void GNSS_GetPVTData(GNSS_StateHandle *GNSS) {
-	HAL_UART_Transmit_DMA(GNSS->huart, getPVTData,
-			sizeof(getPVTData) / sizeof(uint8_t));
+	HAL_UART_Transmit(GNSS->huart, getPVTData,
+			sizeof(getPVTData) / sizeof(uint8_t), 100);
 	//HAL_UARTEx_ReceiveToIdle_DMA
-	HAL_UART_Receive_IT(GNSS->huart, GNSS_Handle.uartWorkingBuffer, 92);
+	HAL_UARTEx_ReceiveToIdle_IT(GNSS->huart, GNSS_Handle.uartWorkingBuffer, 150);
 }
 
 /*!
@@ -169,6 +174,75 @@ void GNSS_SetMode(GNSS_StateHandle *GNSS, short gnssMode) {
  * Look at: 32.17.15.1 u-blox 8 Receiver description.
  * @param GNSS Pointer to main GNSS structure.
  */
+void GNSS_ParsePVTDataPTR(GNSS_StateHandle *GNSS) {
+	uint8_t* bufferPtr = GNSS_Handle.uartWorkingBuffer + UBX_MESSAGE_OFFSET;
+
+	for (int var = 0; var < 4; ++var) {
+		iLong.bytes[var] = bufferPtr[var + 24];
+		GNSS->lonBytes[var]= bufferPtr[var + 24];
+	}
+	GNSS->lon = iLong.iLong;
+	GNSS->fLon=((float)iLong.iLong)/10000000.0;
+	for (int var = 0; var < 4; ++var) {
+		iLong.bytes[var] = bufferPtr[var + 28];
+		GNSS->latBytes[var]= bufferPtr[var + 28];
+	}
+	GNSS->lat = iLong.iLong;
+	GNSS->fLat=((float)iLong.iLong)/10000000.0;
+	for (int var = 0; var < 4; ++var) {
+		iLong.bytes[var] = bufferPtr[var + 32];
+	}
+	GNSS->height = iLong.iLong;
+
+	for (int var = 0; var < 4; ++var) {
+		iLong.bytes[var] = bufferPtr[var + 36];
+		GNSS->hMSLBytes[var] = bufferPtr[var + 36];
+	}
+	GNSS->hMSL = iLong.iLong;
+
+	for (int var = 0; var < 4; ++var) {
+		uLong.bytes[var] = bufferPtr[var + 40];
+	}
+	GNSS->hAcc = uLong.uLong;
+
+	for (int var = 0; var < 4; ++var) {
+		uLong.bytes[var] = bufferPtr[var + 44];
+	}
+	GNSS->vAcc = uLong.uLong;
+
+	for (int var = 0; var < 4; ++var) {
+		iLong.bytes[var] = bufferPtr[var + 48];
+	}
+	GNSS->velN = iLong.iLong;
+
+	for (int var = 0; var < 4; ++var) {
+		iLong.bytes[var] = bufferPtr[var + 52];
+	}
+	GNSS->velE = iLong.iLong;
+
+	for (int var = 0; var < 4; ++var) {
+		iLong.bytes[var] = bufferPtr[var + 56];
+	}
+	GNSS->velD = iLong.iLong;
+
+
+	for (int var = 0; var < 4; ++var) {
+		iLong.bytes[var] = bufferPtr[var + 60];
+		GNSS->gSpeedBytes[var] = bufferPtr[var + 60];
+	}
+	GNSS->gSpeed = iLong.iLong;
+
+	for (int var = 0; var < 4; ++var) {
+		iLong.bytes[var] = bufferPtr[var + 64];
+	}
+	GNSS->headMot = iLong.iLong * 1e-5; // todo I'm not sure this good options.
+
+	for (int var = 0; var < 4; ++var) {
+		uLong.bytes[var] = bufferPtr[var + 68];
+	}
+	GNSS->sAcc = uLong.uLong;
+}
+
 void GNSS_ParsePVTData(GNSS_StateHandle *GNSS) {
 	uShort.bytes[0] = GNSS_Handle.uartWorkingBuffer[10];
 	GNSS->yearBytes[0]=GNSS_Handle.uartWorkingBuffer[10];
@@ -287,15 +361,15 @@ void GNSS_ParsePOSLLHData(GNSS_StateHandle *GNSS) {
  * @param GNSS Pointer to main GNSS structure.
  */
 void GNSS_LoadConfig(GNSS_StateHandle *GNSS) {
-	HAL_UART_Transmit_DMA(GNSS->huart, configUBX,
+	HAL_UART_Transmit_IT(GNSS->huart, configUBX,
 			sizeof(configUBX) / sizeof(uint8_t));
-	HAL_Delay(250);
-	HAL_UART_Transmit_DMA(GNSS->huart, setNMEA410,
+	GNSS->delayFunc(250);
+	HAL_UART_Transmit_IT(GNSS->huart, setNMEA410,
 			sizeof(setNMEA410) / sizeof(uint8_t));
-	HAL_Delay(250);
-	HAL_UART_Transmit_DMA(GNSS->huart, setGNSS,
+	GNSS->delayFunc(250);
+	HAL_UART_Transmit_IT(GNSS->huart, setGNSS,
 			sizeof(setGNSS) / sizeof(uint8_t));
-	HAL_Delay(250);
+	GNSS->delayFunc(250);
 }
 
 

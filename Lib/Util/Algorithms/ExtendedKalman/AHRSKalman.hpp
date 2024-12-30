@@ -22,10 +22,13 @@ public:
 	AHRSKalman(){};
 	const Quaternion& GetState() const;
 	const Matrix<4, 4>& GetNoiseCovariance() const;
-	void InitialiseKalman(const Matrix<3, 1>& acc, const Matrix<3, 1>& mag);
+	void InitialiseKalman(const Matrix<3, 1>& acc, const Matrix<3, 1>& mag, float time);
 	void CorrectStateAcc(const Matrix<3, 1>& acc, float time);
 	void CorrectStateMag(const Matrix<3, 1>& mag, float time);
 	void UpdateState(const Matrix<3, 1>& U, float time);
+	float GetRoll() const;
+	float GetPitch() const;
+	float GetYaw() const;
 private:
 	//Estimated State
 	Quaternion _X;
@@ -38,8 +41,8 @@ private:
 	float _lastCorrectionTime;
 
 	const float _gyroNoiseVariance{0.05};
-	const float _magNoiseVariance{0.64};
-	const float _accNoiseVariance{0.01};
+	const float _magNoiseVariance{1.64};
+	const float _accNoiseVariance{0.21};
 
 	//Process Noise Covariancex
 	Matrix<4, 4> _Q;

@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 
+#include "../../Peripherals/simpleRTK2B/GNSS.h"
 #include "UtilTypes.h"
 
 #ifdef __cplusplus
@@ -20,6 +21,7 @@ extern "C"
 uint8_t InitAlgorithms(const AGMSensorData* sensorData);
 uint8_t ResetKinematics();
 uint8_t MadgwickUpdate(const AGMSensorData* sensorData);
+uint8_t OnGNSSData(const GNSS_StateHandle* GNSSData);
 
 Vec3 GetPosition();
 Vec3 GetVelocity();

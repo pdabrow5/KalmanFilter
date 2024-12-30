@@ -137,7 +137,7 @@ void Bmx160_setMagnConf()
     Bmx160_writeBmxReg(Bmx160_MAGN_IF_3_ADDR, 0x02);
     Bmx160_writeBmxReg(Bmx160_MAGN_IF_2_ADDR, 0x4C);
     Bmx160_writeBmxReg(Bmx160_MAGN_IF_1_ADDR, 0x42);
-    Bmx160_writeBmxReg(Bmx160_MAGN_CONFIG_ADDR, 0x08);
+    Bmx160_writeBmxReg(Bmx160_MAGN_CONFIG_ADDR, Bmx160_MAGN_ODR_200HZ);
     Bmx160_writeBmxReg(Bmx160_MAGN_IF_0_ADDR, 0x03);
     Obmx160.delayMs(50);
 }

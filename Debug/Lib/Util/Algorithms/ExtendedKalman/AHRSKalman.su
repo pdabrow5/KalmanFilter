@@ -1,3 +1,5 @@
+C:\ST\STM32CubeIDE_1.13.2\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626\tools\bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/include/c++/11.3.1/cmath:106:3:constexpr float std::asin(float)	16	static
+C:\ST\STM32CubeIDE_1.13.2\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626\tools\bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/include/c++/11.3.1/cmath:144:3:constexpr float std::atan2(float, float)	16	static
 C:\ST\STM32CubeIDE_1.13.2\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626\tools\bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/include/c++/11.3.1/cmath:184:3:constexpr float std::cos(float)	16	static
 C:\ST\STM32CubeIDE_1.13.2\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626\tools\bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/include/c++/11.3.1/cmath:425:3:constexpr float std::sin(float)	16	static
 C:\ST\STM32CubeIDE_1.13.2\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626\tools\bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/include/c++/11.3.1/cmath:463:3:constexpr float std::sqrt(float)	16	static
@@ -5,10 +7,13 @@ C:\ST\STM32CubeIDE_1.13.2\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.external
 ../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp:22:21:const Mat::Matrix<3, 3>& Algorithms::Inverse3_3Matrix(const Mat::Matrix<3, 3>&)	104	static
 ../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp:40:19:const Mat::Quaternion& Algorithms::AHRSKalman::GetState() const	16	static
 ../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp:45:20:const Mat::Matrix<4, 4>& Algorithms::AHRSKalman::GetNoiseCovariance() const	16	static
-../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp:50:6:void Algorithms::AHRSKalman::InitialiseKalman(const Mat::Matrix<3, 1>&, const Mat::Matrix<3, 1>&)	96	static
-../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp:78:6:void Algorithms::AHRSKalman::UpdateState(const Mat::Matrix<3, 1>&, float)	656	static
-../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp:117:6:void Algorithms::AHRSKalman::CorrectStateMag(const Mat::Matrix<3, 1>&, float)	648	static
-../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp:161:6:void Algorithms::AHRSKalman::CorrectStateAcc(const Mat::Matrix<3, 1>&, float)	648	static
+../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp:50:6:void Algorithms::AHRSKalman::InitialiseKalman(const Mat::Matrix<3, 1>&, const Mat::Matrix<3, 1>&, float)	96	static
+../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp:80:6:void Algorithms::AHRSKalman::UpdateState(const Mat::Matrix<3, 1>&, float)	656	static
+../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp:119:6:void Algorithms::AHRSKalman::CorrectStateMag(const Mat::Matrix<3, 1>&, float)	648	static
+../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp:163:6:void Algorithms::AHRSKalman::CorrectStateAcc(const Mat::Matrix<3, 1>&, float)	648	static
+../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp:207:7:float Algorithms::AHRSKalman::GetRoll() const	24	static
+../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp:213:7:float Algorithms::AHRSKalman::GetPitch() const	24	static
+../Lib/Util/Algorithms/ExtendedKalman/AHRSKalman.cpp:219:7:float Algorithms::AHRSKalman::GetYaw() const	24	static
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp:65:20:Mat::Matrix<size, size> Mat::Eye(float) [with short unsigned int size = 4]	24	static
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp:83:1:Mat::Matrix<heigth, width>::Matrix() [with short unsigned int heigth = 4; short unsigned int width = 4]	16	static
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp:83:1:Mat::Matrix<heigth, width>::Matrix() [with short unsigned int heigth = 3; short unsigned int width = 3]	16	static

@@ -55,12 +55,15 @@ union i_Long
 	signed long iLong;
 };
 
+typedef void (*DelayFunc)(uint16_t);
+
 typedef struct
 {
 	UART_HandleTypeDef *huart;
+	DelayFunc delayFunc;
 
 	uint8_t uniqueID[4];
-	uint8_t uartWorkingBuffer[100];
+	uint8_t uartWorkingBuffer[1000];
 
 	unsigned short year;
 	uint8_t yearBytes[2];
@@ -83,10 +86,13 @@ typedef struct
 	uint8_t hMSLBytes[4];
 	unsigned long hAcc;
 	unsigned long vAcc;
-
+	signed long velN;
+	signed long velE;
+	signed long velD;
 	signed long gSpeed;
 	uint8_t gSpeedBytes[4];
 	signed long headMot;
+	unsigned long sAcc;
 
 }GNSS_StateHandle;
 
@@ -131,7 +137,7 @@ static const uint8_t setWirstMode[]={0xB5,0x62,0x06,0x24,0x24,0x00,0xFF,0xFF,0x0
 static const uint8_t setBikeMode[]={0xB5,0x62,0x06,0x24,0x24,0x00,0xFF,0xFF,0x0A,0x03,0x00,0x00,0x00,0x00,0x10,0x27,0x00,0x00,0x05,0x00,0xFA,0x00,0xFA,0x00,0x64,0x00,0x5E,0x01,0x00,0x3C,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x88,0x90};
 
 static const uint8_t setPortableType[]={};
-void GNSS_Init(GNSS_StateHandle *GNSS, UART_HandleTypeDef *huart);
+void GNSS_Init(GNSS_StateHandle *GNSS, UART_HandleTypeDef *huart, DelayFunc delayFunc);
 void GNSS_LoadConfig(GNSS_StateHandle *GNSS);
 void GNSS_ParseBuffer(GNSS_StateHandle *GNSS);
 
@@ -145,6 +151,7 @@ void GNSS_GetPOSLLHData(GNSS_StateHandle *GNSS);
 void GNSS_ParsePOSLLHData(GNSS_StateHandle *GNSS);
 
 void GNSS_GetPVTData(GNSS_StateHandle *GNSS);
+void GNSS_ParsePVTDataPTR(GNSS_StateHandle *GNSS);
 void GNSS_ParsePVTData(GNSS_StateHandle *GNSS);
 
 void GNSS_SetMode(GNSS_StateHandle *GNSS, short gnssMode);
