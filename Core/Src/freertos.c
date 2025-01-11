@@ -391,7 +391,7 @@ void StartAccMeassureTask(void *argument)
 //			SensorData.Acc.x, SensorData.Acc.y, SensorData.Acc.z,
 //			SensorData.Gyro.x, SensorData.Gyro.y, SensorData.Gyro.z,
 //			SensorData.Mag.x, SensorData.Mag.y, SensorData.Mag.z);
-	osDelay(1);
+	osDelay(10);
 
   }
   /* USER CODE END StartAccMeassureTask */

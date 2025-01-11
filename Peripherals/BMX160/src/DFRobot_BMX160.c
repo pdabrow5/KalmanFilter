@@ -123,7 +123,7 @@ void Bmx160_defaultParamSettg(sBmx160Dev_t *dev)
 void Bmx160_setMagnConf()
 {
     Bmx160_writeBmxReg(Bmx160_MAGN_IF_0_ADDR, 0x80);
-    Obmx160.delayMs(50);
+    Obmx160.delayMs(150);
     // Sleep mode
     Bmx160_writeBmxReg(Bmx160_MAGN_IF_3_ADDR, 0x01);
     Bmx160_writeBmxReg(Bmx160_MAGN_IF_2_ADDR, 0x4B);
@@ -139,7 +139,7 @@ void Bmx160_setMagnConf()
     Bmx160_writeBmxReg(Bmx160_MAGN_IF_1_ADDR, 0x42);
     Bmx160_writeBmxReg(Bmx160_MAGN_CONFIG_ADDR, Bmx160_MAGN_ODR_200HZ);
     Bmx160_writeBmxReg(Bmx160_MAGN_IF_0_ADDR, 0x03);
-    Obmx160.delayMs(50);
+    Obmx160.delayMs(150);
 }
 
 void Bmx160_getAllData(sBmx160SensorData_t *magn, sBmx160SensorData_t *gyro, sBmx160SensorData_t *accel){
@@ -155,7 +155,7 @@ void Bmx160_getAllData(sBmx160SensorData_t *magn, sBmx160SensorData_t *gyro, sBm
         x = (int16_t) (((uint16_t)data[1] << 8) | data[0]);
         y = (int16_t) (((uint16_t)data[3] << 8) | data[2]);
         z = (int16_t) (((uint16_t)data[5] << 8) | data[4]);
-        //LOG("X: %d, Y: %d, Z: %d", x, y, z);
+        LOG("X: %d, Y: %d, Z: %d", x, y, z);
         magn->x = x * Bmx160_MAGN_UT_LSB_XY;
         magn->y = y * Bmx160_MAGN_UT_LSB_XY;
         magn->z = z * Bmx160_MAGN_UT_LSB_Z;

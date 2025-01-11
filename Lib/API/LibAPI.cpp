@@ -97,6 +97,7 @@ uint8_t MadgwickUpdate(const AGMSensorData* sensorData)
 		AccCal = CalibrateAcc(AccRaw);
 		MagCal = CalibrateMag(MagRaw);
 		GyroCal = CalibrateGyro(GyroRaw);
+		//GyroCal = {{0.0f, 0.0f, 0.0f}};
 		AGMSensorData sensorDataCal;
 		sensorDataCal.Acc.x = AccCal(0,0);
 		sensorDataCal.Acc.y = AccCal(1,0);
@@ -120,6 +121,9 @@ uint8_t MadgwickUpdate(const AGMSensorData* sensorData)
 //		my = MagCal(1,0) * md;
 //		mz = MagCal(2,0) * md;
 		//printf("Raw:0,0,0,0,0,0,%f,%f,%f\n\r", MagCal(0,0), MagCal(1,0), MagCal(2,0));
+		printf("Raw:%f,%f,%f,%f,%f,%f,%f,%f,%f\n\r", AccRaw(0,0), AccRaw(1,0), AccRaw(2,0),
+				MagRaw(0,0), MagRaw(1,0), MagRaw(2,0),
+				GyroRaw(0,0), GyroRaw(1,0), GyroRaw(2,0));
 		//printf("%f,	%f,	%f,	%f\n\r", mx, my, mz, md)
 		//return 1;
 
@@ -140,7 +144,7 @@ uint8_t MadgwickUpdate(const AGMSensorData* sensorData)
 		Kalman.CorrectStateAcc(AccCal, currTime);
 		Kalman.CorrectStateMag(MagCal, currTime);
 		Q = Kalman.GetState();
-		LOG("AHRS: \t%f, \t%f, \t%f, \t\t\t%f, \t%f, \t%f", Kalman.GetRoll(), Kalman.GetPitch(), Kalman.GetYaw(), Fusion.GetRoll(), Fusion.GetPitch(), Fusion.GetYaw());
+		//LOG("AHRS: \t%f, \t%f, \t%f, \t\t\t%f, \t%f, \t%f", Kalman.GetRoll(), Kalman.GetPitch(), Kalman.GetYaw(), Fusion.GetRoll(), Fusion.GetPitch(), Fusion.GetYaw());
 		Mat::Quaternion newAcceleration = {0, AccCal(0,0), AccCal(1,0), AccCal(2,0)};
 //		Q.w = GetW();
 //		Q.x = GetX();
@@ -148,7 +152,7 @@ uint8_t MadgwickUpdate(const AGMSensorData* sensorData)
 //		Q.z = GetZ();
 		Q = Kalman.GetState();
 		newAcceleration = (Q * newAcceleration * Q.Conjugate());
-		LOG("Acceleration Vector: \t%f, \t%f, \t%f,  \t%f, \t%f, \t%f", acc(0,0), acc(1,0), acc(2,0), newAcceleration.x, newAcceleration.y, newAcceleration.z);
+		//LOG("Acceleration Vector: \t%f, \t%f, \t%f,  \t%f, \t%f, \t%f", acc(0,0), acc(1,0), acc(2,0), newAcceleration.x, newAcceleration.y, newAcceleration.z);
 
 		//Calculate new Velocity and Position
 //		_position = _position + _velocity * deltat + ((newAcceleration + _acceleration * 2.0f) * (deltat * deltat / 6.0f));
