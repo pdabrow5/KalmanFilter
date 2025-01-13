@@ -80,6 +80,7 @@ uint8_t MadgwickUpdate(const AGMSensorData* sensorData)
 {
 	if(sensorData != nullptr)
 	{
+		static float x{0.0f}, y{0.0f}, z{0.0f}, step{0.005};
 		static float last_time{sensorData->SensorTime * 0.001f};
 		float currTime = sensorData->SensorTime * 0.001f;
 		float deltat = (currTime - last_time);
@@ -113,6 +114,11 @@ uint8_t MadgwickUpdate(const AGMSensorData* sensorData)
 		Fusion.OnIMUData(sensorDataCal);
 		const auto& rotMatrix = Fusion.GetRotationMatrix();
 		auto acc = rotMatrix * AccCal;
+        //LOG("MAG: x: %f,\t y: %f,\t z: %f,\t L: %f", MagCal(0,0), MagCal(1,0), MagCal(2,0), sqrt(MagCal(0,0)*MagCal(0,0) + MagCal(1,0)*MagCal(1,0) + MagCal(2,0)*MagCal(2,0)));
+//		x = x*(1.0f - step) + step*(MagCal(0,0));
+//		y = y*(1.0f - step) + step*(MagCal(1,0));
+//		z = z*(1.0f - step) + step*(MagCal(2,0));
+//        LOG("MAG: x: %f,\t y: %f,\t z: %f,\t L: %f", x, y, z, sqrt(x*x + y*y + z*z));
 //		float mx = 0;
 //		float my = 0;
 //		float mz = 0;
@@ -120,10 +126,12 @@ uint8_t MadgwickUpdate(const AGMSensorData* sensorData)
 //		mx = MagCal(0,0) * md;
 //		my = MagCal(1,0) * md;
 //		mz = MagCal(2,0) * md;
-		//printf("Raw:0,0,0,0,0,0,%f,%f,%f\n\r", MagCal(0,0), MagCal(1,0), MagCal(2,0));
-		printf("Raw:%f,%f,%f,%f,%f,%f,%f,%f,%f\n\r", AccRaw(0,0), AccRaw(1,0), AccRaw(2,0),
-				MagRaw(0,0), MagRaw(1,0), MagRaw(2,0),
-				GyroRaw(0,0), GyroRaw(1,0), GyroRaw(2,0));
+		//printf("Raw:0,0,0,0,0,0,%d,%d,%d\n\r", (int)MagRaw(0,0), (int)MagRaw(1,0), (int)MagRaw(2,0));
+		//printf("Raw:0,0,0,0,0,0,%d,%d,%d\n\r", (int)MagCal(0,0), (int)MagCal(1,0), (int)MagCal(2,0));
+
+//		printf("Uni:%f,%f,%f,%f,%f,%f,%f,%f,%f\n\r", AccRaw(0,0), AccRaw(1,0), AccRaw(2,0),
+//				GyroRaw(0,0), GyroRaw(1,0), GyroRaw(2,0),
+//				MagRaw(0,0), MagRaw(1,0), MagRaw(2,0));
 		//printf("%f,	%f,	%f,	%f\n\r", mx, my, mz, md)
 		//return 1;
 
@@ -152,7 +160,7 @@ uint8_t MadgwickUpdate(const AGMSensorData* sensorData)
 //		Q.z = GetZ();
 		Q = Kalman.GetState();
 		newAcceleration = (Q * newAcceleration * Q.Conjugate());
-		//LOG("Acceleration Vector: \t%f, \t%f, \t%f,  \t%f, \t%f, \t%f", acc(0,0), acc(1,0), acc(2,0), newAcceleration.x, newAcceleration.y, newAcceleration.z);
+		LOG("Acceleration Vector: \t%f, \t%f, \t%f,  \t%f, \t%f, \t%f", acc(0,0), acc(1,0), acc(2,0), newAcceleration.x, newAcceleration.y, newAcceleration.z);
 
 		//Calculate new Velocity and Position
 //		_position = _position + _velocity * deltat + ((newAcceleration + _acceleration * 2.0f) * (deltat * deltat / 6.0f));

@@ -79,7 +79,7 @@ const osThreadAttr_t defaultTask_attributes = {
 };
 /* Definitions for AccMeassure */
 osThreadId_t AccMeassureHandle;
-uint32_t AccMeassureBuffer[ 2048 ];
+uint32_t AccMeassureBuffer[ 4096 ];
 osStaticThreadDef_t AccMeassureControlBlock;
 const osThreadAttr_t AccMeassure_attributes = {
   .name = "AccMeassure",
@@ -91,7 +91,7 @@ const osThreadAttr_t AccMeassure_attributes = {
 };
 /* Definitions for ReceiveGNSSData */
 osThreadId_t ReceiveGNSSDataHandle;
-uint32_t ReceiveGNSSDataBuffer[ 2048 ];
+uint32_t ReceiveGNSSDataBuffer[ 4096 ];
 osStaticThreadDef_t ReceiveGNSSDataControlBlock;
 const osThreadAttr_t ReceiveGNSSData_attributes = {
   .name = "ReceiveGNSSData",
@@ -334,6 +334,7 @@ void StartDefaultTask(void *argument)
 /* USER CODE END Header_StartAccMeassureTask */
 void StartAccMeassureTask(void *argument)
 {
+	//static float x = 0.0f, y = 0.0f, z = 0.0f, step = 0.005;
   /* USER CODE BEGIN StartAccMeassureTask */
   /* Infinite loop */
 	Bmx160_init();
@@ -380,6 +381,11 @@ void StartAccMeassureTask(void *argument)
 	SensorData.Mag.z = Omagn.z;
 	SensorData.SensorTime = Omagn.sensortime;
 	MadgwickUpdate(&SensorData);
+//
+//	x = x*(1.0f - step) + step*(Omagn.x);
+//	y = y*(1.0f - step) + step*(Omagn.y);
+//	z = z*(1.0f - step) + step*(Omagn.z);
+//	LOG("MAG: x: %f,\t y: %f,\t z: %f,\t L: %f", x, y, z, sqrt(x*x + y*y + z*z));
 //	int mx = 0;
 //	int my = 0;
 //	int mz = 0;
@@ -387,11 +393,11 @@ void StartAccMeassureTask(void *argument)
 //	my = Omagn.y * 10.0f;
 //	mz = Omagn.z * 10.0f;
 //	//LOG("Raw:0,0,0,0,0,0,%d,%d,%d\n\r", mx, my, mz);
-//	//LOG("Raw:%f,%f,%f,%f,%f,%f,%f,%f,%f\n\r",
+//	LOG("Raw:%f,%f,%f,%f,%f,%f,%f,%f,%f\n\r",
 //			SensorData.Acc.x, SensorData.Acc.y, SensorData.Acc.z,
 //			SensorData.Gyro.x, SensorData.Gyro.y, SensorData.Gyro.z,
 //			SensorData.Mag.x, SensorData.Mag.y, SensorData.Mag.z);
-	osDelay(10);
+	osDelay(1);
 
   }
   /* USER CODE END StartAccMeassureTask */
@@ -408,9 +414,10 @@ void StartReceiveGNSSDataTask(void *argument)
 {
   /* USER CODE BEGIN StartReceiveGNSSDataTask */
   /* Infinite loop */
+	osDelay(10000);
 	LOG("GNSS INIT");
 	GNSS_Init(&GNSS_Handle, &huart1, DelayFunction);
-	osDelay(1000);
+	osDelay(100);
 	LOG("GNSS LOAD CONFIG");
 	//GNSS_LoadConfig(&GNSS_Handle);
 	LOG("GNSS CONFIG LOADED!!!");
@@ -422,7 +429,7 @@ void StartReceiveGNSSDataTask(void *argument)
     Receive_IT_IDLE();
 	//AskPvtReceive_IT_IDLE();
 	LOG("Waiting for semaphore...");
-	xSemaphoreTake(GNNS_UART_INTERRUPTHandle, portMAX_DELAY);
+	xSemaphoreTake(GNNS_UART_INTERRUPTHandle, portTICK_PERIOD_MS*3000);
 	LOG("Got into loop, no.%d", INTERRUPTS);
 	if(inter_flag == 0)
 	{

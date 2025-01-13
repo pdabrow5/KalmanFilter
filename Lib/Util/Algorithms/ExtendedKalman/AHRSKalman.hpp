@@ -40,9 +40,9 @@ private:
 	float _lastUpdateTime;
 	float _lastCorrectionTime;
 
-	const float _gyroNoiseVariance{0.95};
-	const float _magNoiseVariance{1.64};
-	const float _accNoiseVariance{0.21};
+	const float _gyroNoiseVariance{0.05};
+	const float _magNoiseVariance{0.4};
+	const float _accNoiseVariance{0.01};
 
 	//Process Noise Covariancex
 	Matrix<4, 4> _Q;

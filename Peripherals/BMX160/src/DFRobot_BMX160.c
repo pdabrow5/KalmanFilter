@@ -106,11 +106,11 @@ void Bmx160_defaultParamSettg(sBmx160Dev_t *dev)
 {
   // Initializing accel and gyro params with
   dev->gyroCfg.bw = Bmx160_GYRO_BW_NORMAL_MODE;
-  dev->gyroCfg.odr = Bmx160_GYRO_ODR_200HZ;
+  dev->gyroCfg.odr = Bmx160_GYRO_ODR_100HZ;
   dev->gyroCfg.power = Bmx160_GYRO_SUSPEND_MODE;
   dev->gyroCfg.range = Bmx160_GYRO_RANGE_250_DPS;
   dev->accelCfg.bw = Bmx160_ACCEL_BW_NORMAL_AVG4;
-  dev->accelCfg.odr = Bmx160_ACCEL_ODR_200HZ;
+  dev->accelCfg.odr = Bmx160_ACCEL_ODR_100HZ;
   dev->accelCfg.power = Bmx160_ACCEL_SUSPEND_MODE;
   dev->accelCfg.range = Bmx160_ACCEL_RANGE_2G;
 
@@ -137,7 +137,7 @@ void Bmx160_setMagnConf()
     Bmx160_writeBmxReg(Bmx160_MAGN_IF_3_ADDR, 0x02);
     Bmx160_writeBmxReg(Bmx160_MAGN_IF_2_ADDR, 0x4C);
     Bmx160_writeBmxReg(Bmx160_MAGN_IF_1_ADDR, 0x42);
-    Bmx160_writeBmxReg(Bmx160_MAGN_CONFIG_ADDR, Bmx160_MAGN_ODR_200HZ);
+    Bmx160_writeBmxReg(Bmx160_MAGN_CONFIG_ADDR, Bmx160_MAGN_ODR_100HZ);
     Bmx160_writeBmxReg(Bmx160_MAGN_IF_0_ADDR, 0x03);
     Obmx160.delayMs(150);
 }
@@ -146,22 +146,26 @@ void Bmx160_getAllData(sBmx160SensorData_t *magn, sBmx160SensorData_t *gyro, sBm
 
     uint8_t data[23] = {0};
     int16_t x=0,y=0,z=0;
+    static int16_t old_x=0, old_y=0, old_z=0;
     uint32_t time = 0;
     float time_f;
     Bmx160_readReg(Bmx160_MAG_DATA_ADDR, data, 23);
     time = (uint32_t) ((uint32_t)(((uint16_t)data[22] << 8) | data[21]) << 8 | data[20]);
     time_f = ((float)(time)) * 0.039f;
     if(magn){
-        x = (int16_t) (((uint16_t)data[1] << 8) | data[0]);
+    	x = (int16_t) (((uint16_t)data[1] << 8) | data[0]);
         y = (int16_t) (((uint16_t)data[3] << 8) | data[2]);
         z = (int16_t) (((uint16_t)data[5] << 8) | data[4]);
-        LOG("X: %d, Y: %d, Z: %d", x, y, z);
+        if(x == old_x && y == old_y && z == old_z)
+        	LOG("ERROR: X: %d, Y: %d, Z: %d", x, y, z);
+        old_x = x; old_y = y; old_z = z;
+        //printf("Raw:%d,%d,%d,%d,%d,%d,%d,%d,%d\n\r", 0, 0, 0, 0, 0, 0, x, y, z);
         magn->x = x * Bmx160_MAGN_UT_LSB_XY;
         magn->y = y * Bmx160_MAGN_UT_LSB_XY;
         magn->z = z * Bmx160_MAGN_UT_LSB_Z;
-//        magn->x = x * Bmx160_MAGN_UT_LSB_XY;
-//		magn->y = y * Bmx160_MAGN_UT_LSB_XY;
-//		magn->z = z * Bmx160_MAGN_UT_LSB_XY;
+//        magn->x = x;
+//		magn->y = y;
+//		magn->z = z;
         magn->sensortime = time_f;
     }
     if(gyro){

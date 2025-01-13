@@ -19,8 +19,8 @@ namespace Algorithms
 {
 
 constexpr float _gyroNoiseVariance = 0.05;
-constexpr float _magNoiseVariance = 0.64;
-constexpr float _accNoiseVariance = 0.01;
+constexpr float _magNoiseVariance = 2.4;
+constexpr float _accNoiseVariance = 0.10;
 
 class FusionAlgorithm
 {

@@ -6,8 +6,8 @@
 ../Peripherals/BMX160/src/DFRobot_BMX160.c:90:8:Bmx160_softReset	3
 ../Peripherals/BMX160/src/DFRobot_BMX160.c:105:6:Bmx160_defaultParamSettg	1
 ../Peripherals/BMX160/src/DFRobot_BMX160.c:123:6:Bmx160_setMagnConf	1
-../Peripherals/BMX160/src/DFRobot_BMX160.c:145:6:Bmx160_getAllData	4
-../Peripherals/BMX160/src/DFRobot_BMX160.c:187:6:Bmx160_writeBmxReg	1
-../Peripherals/BMX160/src/DFRobot_BMX160.c:193:6:Bmx160_writeReg	1
-../Peripherals/BMX160/src/DFRobot_BMX160.c:198:6:Bmx160_readReg	1
-../Peripherals/BMX160/src/DFRobot_BMX160.c:203:9:Bmx160_scan	1
+../Peripherals/BMX160/src/DFRobot_BMX160.c:145:6:Bmx160_getAllData	7
+../Peripherals/BMX160/src/DFRobot_BMX160.c:191:6:Bmx160_writeBmxReg	1
+../Peripherals/BMX160/src/DFRobot_BMX160.c:197:6:Bmx160_writeReg	1
+../Peripherals/BMX160/src/DFRobot_BMX160.c:202:6:Bmx160_readReg	1
+../Peripherals/BMX160/src/DFRobot_BMX160.c:207:9:Bmx160_scan	1
