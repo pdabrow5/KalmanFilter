@@ -13,8 +13,8 @@
 #include "stm32h7xx_hal.h"
 #include "usart.h"
 
-#ifdef DEBUG
 #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#ifdef DEBUG
 
 #define LOG(...) \
 	  {printf("%lu	%s(%u):	", HAL_GetTick(),__func__, __LINE__); \

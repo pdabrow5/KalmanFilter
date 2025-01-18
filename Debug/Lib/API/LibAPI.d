@@ -51,6 +51,7 @@ Lib/API/LibAPI.o: ../Lib/API/LibAPI.cpp ../Lib/API/LibAPI.h \
  ../Lib/API/../Util/Algorithms/ExtendedKalman/OrientationEKF.hpp \
  ../Lib/API/../Util/Algorithms/../../../Peripherals/simpleRTK2B/GNSS.h \
  ../Lib/API/../Util/Algorithms/ExtendedKalman/AHRSKalman.hpp \
+ ../Lib/API/../Util/Algorithms/ExtendedKalman/AHRSKalman.hpp \
  C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Platform/inc/calibrate.h \
  C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp \
  C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Platform/inc/constants.h \
@@ -110,6 +111,7 @@ C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Vect
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp:
 ../Lib/API/../Util/Algorithms/ExtendedKalman/OrientationEKF.hpp:
 ../Lib/API/../Util/Algorithms/../../../Peripherals/simpleRTK2B/GNSS.h:
+../Lib/API/../Util/Algorithms/ExtendedKalman/AHRSKalman.hpp:
 ../Lib/API/../Util/Algorithms/ExtendedKalman/AHRSKalman.hpp:
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Platform/inc/calibrate.h:
 C:/Users/pawda/STM32CubeIDE/workspace_1.13.2/KalmanFilter/Lib/Util/Math/inc/Matrix.hpp:

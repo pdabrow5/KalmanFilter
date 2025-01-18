@@ -13,6 +13,7 @@
 #include "ExtendedKalman/VelocityEKF.hpp"
 #include "ExtendedKalman/OrientationEKF.hpp"
 #include "../../../Peripherals/simpleRTK2B/GNSS.h"
+#include "ExtendedKalman/AHRSKalman.hpp"
 
 
 namespace Algorithms
@@ -31,31 +32,34 @@ public:
 //			float time);
 	FusionAlgorithm(){
 		_orientationControlCov = Eye<3>(_gyroNoiseVariance);
-		_orientationMeassurementCov(0,0) = _accNoiseVariance;
-		_orientationMeassurementCov(1,1) = _accNoiseVariance;
-		_orientationMeassurementCov(2,2) = _accNoiseVariance;
-		_orientationMeassurementCov(3,3) = _magNoiseVariance;
-		_orientationMeassurementCov(4,4) = _magNoiseVariance;
-		_orientationMeassurementCov(5,5) = _magNoiseVariance;
+//		_orientationMeassurementCov(0,0) = _accNoiseVariance;
+//		_orientationMeassurementCov(1,1) = _accNoiseVariance;
+//		_orientationMeassurementCov(2,2) = _accNoiseVariance;
+//		_orientationMeassurementCov(3,3) = _magNoiseVariance;
+//		_orientationMeassurementCov(4,4) = _magNoiseVariance;
+//		_orientationMeassurementCov(5,5) = _magNoiseVariance;
 	};
 	void InitState(const Matrix<3, 1>& acc, const Matrix<3, 1>& mag, float time);
-	void OnIMUData(const AGMSensorData& imuData);
+	//void OnIMUData(const AGMSensorData& imuData);
+	void OnIMUData(const Matrix<3, 1>& acc, const Matrix<3, 1>& gyro, const Matrix<3, 1>& mag, float time);
 	void OnGNSSData(const GNSS_StateHandle* GNSSData);
 	float GetRoll() const;
 	float GetPitch() const;
 	float GetYaw() const;
 	const VelocityEKF::StateVec& GetVelPos() const {return _velocityEKF.GetState();}
 private:
-	OrientationEKF _orientationEKF{OrientationEKF::StateVec{}, OrientationEKF::StateCovarianceMatrix{}, 0.0f};
+//	OrientationEKF _orientationEKF{OrientationEKF::StateVec{}, OrientationEKF::StateCovarianceMatrix{}, 0.0f};
 	VelocityEKF _velocityEKF{VelocityEKF::StateVec{}, VelocityEKF::StateCovarianceMatrix{}, 0.0f};
-	OrientationEKF::ControlVec _orientationControlVec;
+//	OrientationEKF::ControlVec _orientationControlVec;
 	OrientationEKF::ControlCovarianceMatrix _orientationControlCov;
-	OrientationEKF::MeassurementVec _orientationMeassurementVec;
-	OrientationEKF::MeasurementCovarianceMatrix _orientationMeassurementCov;
+//	OrientationEKF::MeassurementVec _orientationMeassurementVec;
+//	OrientationEKF::MeasurementCovarianceMatrix _orientationMeassurementCov;
 	VelocityEKF::ControlVec _velocityControlVec;
 	VelocityEKF::ControlCovarianceMatrix _velocityControlCov;
 	VelocityEKF::MeassurementVec _velocityMeassurementVec;
 	VelocityEKF::MeasurementCovarianceMatrix _velocityMeassurementCov;
+
+	AHRSKalman _AHRSKalman{};
 
 //Helper methods
 	const Matrix<3,3>& _GetGlobalAccCov(float x, float y, float z) const;

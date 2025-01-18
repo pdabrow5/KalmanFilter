@@ -19,9 +19,10 @@ namespace
 namespace Algorithms
 {
 
-constexpr float magDip = 1.191455d;
-//const V_Vector<3> _r{{0.0f, cos(magDip), -sin(magDip)}};
-const V_Vector<3> _r{{0.0f, 12.10f, -47.2f}};
+//constexpr float magDip = 1.191455d;
+constexpr float magDip = 0.5f;
+const V_Vector<3> _r{{0.0f, cos(magDip), -sin(magDip)}};
+//const V_Vector<3> _r{{0.0f, 12.10f, -47.2f}};
 const V_Vector<3> r{{0.0f, _r(1) * (1 / _r.Norm()), _r(2) * (1 / _r.Norm())}};
 const V_Vector<3> r2{{0.0f, r(1)*2.0f, r(2)*2.0f}};
 

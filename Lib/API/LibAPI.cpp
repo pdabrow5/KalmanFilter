@@ -80,7 +80,7 @@ uint8_t MadgwickUpdate(const AGMSensorData* sensorData)
 {
 	if(sensorData != nullptr)
 	{
-		static float x{0.0f}, y{0.0f}, z{0.0f}, step{0.005};
+		//static float x{0.0f}, y{0.0f}, z{0.0f}, step{0.005};
 		static float last_time{sensorData->SensorTime * 0.001f};
 		float currTime = sensorData->SensorTime * 0.001f;
 		float deltat = (currTime - last_time);
@@ -99,19 +99,22 @@ uint8_t MadgwickUpdate(const AGMSensorData* sensorData)
 		MagCal = CalibrateMag(MagRaw);
 		GyroCal = CalibrateGyro(GyroRaw);
 		//GyroCal = {{0.0f, 0.0f, 0.0f}};
-		AGMSensorData sensorDataCal;
-		sensorDataCal.Acc.x = AccCal(0,0);
-		sensorDataCal.Acc.y = AccCal(1,0);
-		sensorDataCal.Acc.z = AccCal(2,0);
-		sensorDataCal.Mag.x = MagCal(0,0);
-		sensorDataCal.Mag.y = MagCal(1,0);
-		sensorDataCal.Mag.z = MagCal(2,0);
-		sensorDataCal.Gyro.x = GyroCal(0,0);
-		sensorDataCal.Gyro.y = GyroCal(1,0);
-		sensorDataCal.Gyro.z = GyroCal(2,0);
+		//		AGMSensorData sensorDataCal;
+		//		sensorDataCal.Acc.x = AccCal(0,0);
+		//		sensorDataCal.Acc.y = AccCal(1,0);
+		//		sensorDataCal.Acc.z = AccCal(2,0);
+		//		sensorDataCal.Mag.x = MagCal(0,0);
+		//		sensorDataCal.Mag.y = MagCal(1,0);
+		//		sensorDataCal.Mag.z = MagCal(2,0);
+		//		sensorDataCal.Gyro.x = GyroCal(0,0);
+		//		sensorDataCal.Gyro.y = GyroCal(1,0);
+		//		sensorDataCal.Gyro.z = GyroCal(2,0);
 		currTime = (float)(HAL_GetTick()) * ms2s;
-		sensorDataCal.SensorTime = currTime;
-		Fusion.OnIMUData(sensorDataCal);
+		//		sensorDataCal.SensorTime = currTime;
+		//Fusion.OnIMUData(sensorDataCal);
+//AHRS
+		Fusion.OnIMUData(AccCal, GyroCal, MagCal, currTime);
+//AHRS
 		const auto& rotMatrix = Fusion.GetRotationMatrix();
 		auto acc = rotMatrix * AccCal;
         //LOG("MAG: x: %f,\t y: %f,\t z: %f,\t L: %f", MagCal(0,0), MagCal(1,0), MagCal(2,0), sqrt(MagCal(0,0)*MagCal(0,0) + MagCal(1,0)*MagCal(1,0) + MagCal(2,0)*MagCal(2,0)));
@@ -148,19 +151,23 @@ uint8_t MadgwickUpdate(const AGMSensorData* sensorData)
 //								AccCal(0,0), AccCal(1,0), AccCal(2,0),
 //								MagCal(0,0), MagCal(1,0), MagCal(2,0),
 //								sensorData->SensorTime / 1000.0f);
-		Kalman.UpdateState(GyroCal, currTime);
-		Kalman.CorrectStateAcc(AccCal, currTime);
-		Kalman.CorrectStateMag(MagCal, currTime);
-		Q = Kalman.GetState();
+	//		Kalman.UpdateState(GyroCal, currTime);
+	//		Kalman.CorrectStateAcc(AccCal, currTime);
+	//		Kalman.CorrectStateMag(MagCal, currTime);
+	//		Q = Kalman.GetState();
 		//LOG("AHRS: \t%f, \t%f, \t%f, \t\t\t%f, \t%f, \t%f", Kalman.GetRoll(), Kalman.GetPitch(), Kalman.GetYaw(), Fusion.GetRoll(), Fusion.GetPitch(), Fusion.GetYaw());
-		Mat::Quaternion newAcceleration = {0, AccCal(0,0), AccCal(1,0), AccCal(2,0)};
+		printf("%f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f\n\r",currTime, Fusion.GetRoll(), Fusion.GetPitch(), Fusion.GetYaw(),
+				GyroCal(0, 0), GyroCal(1, 0), GyroCal(2, 0),
+				AccCal(0, 0), AccCal(1, 0), AccCal(2, 0),
+				MagCal(0, 0), MagCal(1, 0), MagCal(2, 0));
+		//Mat::Quaternion newAcceleration = {0, AccCal(0,0), AccCal(1,0), AccCal(2,0)};
 //		Q.w = GetW();
 //		Q.x = GetX();
 //		Q.y = GetY();
 //		Q.z = GetZ();
-		Q = Kalman.GetState();
-		newAcceleration = (Q * newAcceleration * Q.Conjugate());
-		LOG("Acceleration Vector: \t%f, \t%f, \t%f,  \t%f, \t%f, \t%f", acc(0,0), acc(1,0), acc(2,0), newAcceleration.x, newAcceleration.y, newAcceleration.z);
+		//Q = Kalman.GetState();
+		//newAcceleration = (Q * newAcceleration * Q.Conjugate());
+		//LOG("Acc Vector: \t%f, \t%f, \t%f,  \t%f, \t%f, \t%f \n\r", acc(0,0), acc(1,0), acc(2,0), newAcceleration.x, newAcceleration.y, newAcceleration.z);
 
 		//Calculate new Velocity and Position
 //		_position = _position + _velocity * deltat + ((newAcceleration + _acceleration * 2.0f) * (deltat * deltat / 6.0f));

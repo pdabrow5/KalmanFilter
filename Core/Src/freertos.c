@@ -245,7 +245,7 @@ void MX_FREERTOS_Init(void) {
   AccMeassureHandle = osThreadNew(StartAccMeassureTask, NULL, &AccMeassure_attributes);
 
   /* creation of ReceiveGNSSData */
-  ReceiveGNSSDataHandle = osThreadNew(StartReceiveGNSSDataTask, NULL, &ReceiveGNSSData_attributes);
+  	  //ReceiveGNSSDataHandle = osThreadNew(StartReceiveGNSSDataTask, NULL, &ReceiveGNSSData_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -334,7 +334,6 @@ void StartDefaultTask(void *argument)
 /* USER CODE END Header_StartAccMeassureTask */
 void StartAccMeassureTask(void *argument)
 {
-	//static float x = 0.0f, y = 0.0f, z = 0.0f, step = 0.005;
   /* USER CODE BEGIN StartAccMeassureTask */
   /* Infinite loop */
 	Bmx160_init();
@@ -448,16 +447,16 @@ void StartReceiveGNSSDataTask(void *argument)
     //printf("%s \n\r", GNSS_Handle.uartWorkingBuffer);
 	//GNSS_ParsePVTData(&GNSS_Handle);
 	GNSS_ParsePVTDataPTR(&GNSS_Handle);
-	LOG("Buffer: %d", GNSS_Handle.uartWorkingBuffer[0]);
-	LOG("Day: %d-%d-%d \r\n", GNSS_Handle.day, GNSS_Handle.month,GNSS_Handle.year);
-	LOG("Time: %d:%d:%d \r\n", GNSS_Handle.hour, GNSS_Handle.min,GNSS_Handle.sec);
-	LOG("Status of fix: %d \r\n", GNSS_Handle.fixType);
-	LOG("Latitude: %f \r\n", GNSS_Handle.fLat);
-	LOG("Longitude: %f \r\n",(float) GNSS_Handle.lon / 10000000.0);
-	LOG("Height above ellipsoid: %d \r\n", GNSS_Handle.height);
-	LOG("Height above mean sea level: %d \r\n", GNSS_Handle.hMSL);
-	LOG("Ground Speed (2-D): %d \r\n", GNSS_Handle.gSpeed);
-	LOG("");
+	//	LOG("Buffer: %d", GNSS_Handle.uartWorkingBuffer[0]);
+	//	LOG("Day: %d-%d-%d \r\n", GNSS_Handle.day, GNSS_Handle.month,GNSS_Handle.year);
+	//	LOG("Time: %d:%d:%d \r\n", GNSS_Handle.hour, GNSS_Handle.min,GNSS_Handle.sec);
+	//	LOG("Status of fix: %d \r\n", GNSS_Handle.fixType);
+	//	LOG("Latitude: %f \r\n", GNSS_Handle.fLat);
+	//	LOG("Longitude: %f \r\n",(float) GNSS_Handle.lon / 10000000.0);
+	//	LOG("Height above ellipsoid: %d \r\n", GNSS_Handle.height);
+	//	LOG("Height above mean sea level: %d \r\n", GNSS_Handle.hMSL);
+	//	LOG("Ground Speed (2-D): %d \r\n", GNSS_Handle.gSpeed);
+	//	LOG("");
 	OnGNSSData(&GNSS_Handle);
   }
   /* USER CODE END StartReceiveGNSSDataTask */
