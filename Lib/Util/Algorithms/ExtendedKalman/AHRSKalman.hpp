@@ -40,9 +40,9 @@ private:
 	float _lastUpdateTime;
 	float _lastCorrectionTime;
 
-	const float _gyroNoiseVariance{0.05};
-	const float _magNoiseVariance{0.2};
-	const float _accNoiseVariance{0.05};
+	const float _gyroNoiseVariance{0.001};
+	const float _magNoiseVariance{0.3};
+	const float _accNoiseVariance{0.03};
 //
 //	const float _gyroNoiseVariance{0.002};
 //	const float _magNoiseVariance{0.1};

@@ -113,6 +113,16 @@ uint8_t MadgwickUpdate(const AGMSensorData* sensorData)
 		//		sensorDataCal.SensorTime = currTime;
 		//Fusion.OnIMUData(sensorDataCal);
 //AHRS
+//		static float time_offset = 0.0f;
+//		static bool first_time = true;
+//		if(first_time)
+//		{
+//			time_offset = currTime;
+//			first_time = false;
+//			return 1;
+//		}
+//		currTime -= time_offset;
+
 		Fusion.OnIMUData(AccCal, GyroCal, MagCal, currTime);
 //AHRS
 		const auto& rotMatrix = Fusion.GetRotationMatrix();
@@ -151,23 +161,23 @@ uint8_t MadgwickUpdate(const AGMSensorData* sensorData)
 //								AccCal(0,0), AccCal(1,0), AccCal(2,0),
 //								MagCal(0,0), MagCal(1,0), MagCal(2,0),
 //								sensorData->SensorTime / 1000.0f);
-	//		Kalman.UpdateState(GyroCal, currTime);
-	//		Kalman.CorrectStateAcc(AccCal, currTime);
-	//		Kalman.CorrectStateMag(MagCal, currTime);
-	//		Q = Kalman.GetState();
+//			Kalman.UpdateState(GyroCal, currTime);
+//			Kalman.CorrectStateAcc(AccCal, currTime);
+//			Kalman.CorrectStateMag(MagCal, currTime);
+//			Q = Kalman.GetState();
 		//LOG("AHRS: \t%f, \t%f, \t%f, \t\t\t%f, \t%f, \t%f", Kalman.GetRoll(), Kalman.GetPitch(), Kalman.GetYaw(), Fusion.GetRoll(), Fusion.GetPitch(), Fusion.GetYaw());
-		printf("%f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f\n\r",currTime, Fusion.GetRoll(), Fusion.GetPitch(), Fusion.GetYaw(),
-				GyroCal(0, 0), GyroCal(1, 0), GyroCal(2, 0),
-				AccCal(0, 0), AccCal(1, 0), AccCal(2, 0),
-				MagCal(0, 0), MagCal(1, 0), MagCal(2, 0));
-		//Mat::Quaternion newAcceleration = {0, AccCal(0,0), AccCal(1,0), AccCal(2,0)};
+//		printf("%f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f\n\r",currTime, Fusion.GetRoll(), Fusion.GetPitch(), Fusion.GetYaw(),
+//				GyroCal(0, 0), GyroCal(1, 0), GyroCal(2, 0),
+//				AccCal(0, 0), AccCal(1, 0), AccCal(2, 0),
+//				MagCal(0, 0), MagCal(1, 0), MagCal(2, 0));
+		Mat::Quaternion newAcceleration = {0, AccCal(0,0), AccCal(1,0), AccCal(2,0)};
 //		Q.w = GetW();
 //		Q.x = GetX();
 //		Q.y = GetY();
 //		Q.z = GetZ();
 		//Q = Kalman.GetState();
-		//newAcceleration = (Q * newAcceleration * Q.Conjugate());
-		//LOG("Acc Vector: \t%f, \t%f, \t%f,  \t%f, \t%f, \t%f \n\r", acc(0,0), acc(1,0), acc(2,0), newAcceleration.x, newAcceleration.y, newAcceleration.z);
+		newAcceleration = (Q * newAcceleration * Q.Conjugate());
+		//LOG("Acc Vector: \t%f, \t%f, \t%f,  \t%f, \t%f, \t%f \n\r", acc(0,0), acc(1,0), acc(2,0) - 9.8065f, newAcceleration.x, newAcceleration.y + 0.15f, newAcceleration.z - 9.65f);
 
 		//Calculate new Velocity and Position
 //		_position = _position + _velocity * deltat + ((newAcceleration + _acceleration * 2.0f) * (deltat * deltat / 6.0f));

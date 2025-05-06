@@ -25,4 +25,7 @@
 #define FAST_LOG(...)
 #endif
 
+#undef LOG(...)
+#define LOG(...)
+
 #endif /* INC_LOGGER_H_ */

@@ -49,7 +49,7 @@ public:
 	const VelocityEKF::StateVec& GetVelPos() const {return _velocityEKF.GetState();}
 private:
 //	OrientationEKF _orientationEKF{OrientationEKF::StateVec{}, OrientationEKF::StateCovarianceMatrix{}, 0.0f};
-	VelocityEKF _velocityEKF{VelocityEKF::StateVec{}, VelocityEKF::StateCovarianceMatrix{}, 0.0f};
+	VelocityEKF _velocityEKF{VelocityEKF::StateVec{0.0f}, VelocityEKF::StateCovarianceMatrix{Eye<6>(1.0f)}, 0.0f};
 //	OrientationEKF::ControlVec _orientationControlVec;
 	OrientationEKF::ControlCovarianceMatrix _orientationControlCov;
 //	OrientationEKF::MeassurementVec _orientationMeassurementVec;

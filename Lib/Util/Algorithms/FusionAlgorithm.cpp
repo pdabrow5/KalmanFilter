@@ -52,10 +52,23 @@ void FusionAlgorithm::OnIMUData(const Matrix<3, 1>& acc, const Matrix<3, 1>& gyr
 	Mat::Quaternion newAcceleration = {0, acc(0,0), acc(1,0), acc(2,0)};
 	newAcceleration = (Q * newAcceleration * Q.Conjugate());
 	V_Vector<3> accENU{{newAcceleration.x, newAcceleration.y, newAcceleration.z}};
-	accENU(2) -= Gravity;
-	_velocityEKF.Predict(static_cast<const V_Vector<3>&>(accENU), _GetGlobalAccCov(acc(0,0), acc(1,0), acc(2,0)), time);
+	//accENU(2) -= Gravity;
+	accENU(1) += 0.5f;
+	accENU(2) -= 9.65f;
+	static const Mat::Matrix<3,3> globalAccCov = Eye<3>(0.1f);
+//	_velocityEKF.Predict(static_cast<const V_Vector<3>&>(accENU), _GetGlobalAccCov(acc(0,0), acc(1,0), acc(2,0)), time);
+	_velocityEKF.Predict(static_cast<const V_Vector<3>&>(accENU), globalAccCov, time);
 	const auto& vel = _velocityEKF.GetState();
-	//LOG("ENU: \t%f, \t%f, \t%f VEL: \t%f, \t%f, \t%f", accENU(0), accENU(1), accENU(2), vel(0), vel(1), vel(2));
+	const auto& cov = _velocityEKF.GetStateCov();
+//	printf("%f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f\n\r", time,
+//			GetRoll(), GetPitch(), GetYaw(),
+//			gyro(0, 0), gyro(1, 0), gyro(2, 0),
+//			acc(0, 0), acc(1, 0), acc(2, 0),
+//			mag(0, 0), mag(1, 0), mag(2, 0),
+//			vel(0), vel(1), vel(2));
+//	LOG("ENU: \t%f, \t%f, \t%f VEL: \t%f, \t%f, \t%f", accENU(0), accENU(1), accENU(2), vel(0), vel(1), vel(2));
+	//printf("%f, %f, %f, %f, %f, %f, %f\n\r", time, accENU(0), accENU(1), accENU(2), vel(0), vel(1), vel(2));
+	//LOG("COV: \t%f, \t%f, \t%f \t%f, \t%f, \t%f", cov(0,0), cov(1,1), cov(2,2), cov(3,3), cov(4,4), cov(5,5));
 //AHRS
 	//V_Vector<3> accL{{imuData.Acc.x, imuData.Acc.y, imuData.Acc.z}};
 	//auto accENU = GetRotationMatrix()*accL;
@@ -74,14 +87,18 @@ void FusionAlgorithm::OnGNSSData(const GNSS_StateHandle* GNSSData)
 	measurementVec(4) = GNSSData->fLon;
 	measurementVec(5) = ((float)GNSSData->hMSL) * mm2m;
 	//LOG("measurementVec: \t%f, \t%f, \t%f, \t%f, \t%f, \t%f", measurementVec(0), measurementVec(1), measurementVec(2), measurementVec(3), measurementVec(4), measurementVec(5));
-
-	measurementCov(0,0) = ((float)GNSSData->sAcc) * mm2m;
-	measurementCov(1,1) = ((float)GNSSData->sAcc) * mm2m;
-	measurementCov(2,2) = ((float)GNSSData->sAcc) * mm2m;
+	measurementCov(0,0) = ((float)GNSSData->sAcc) * mm2m * ((float)GNSSData->sAcc) * mm2m;
+	measurementCov(1,1) = ((float)GNSSData->sAcc) * mm2m * ((float)GNSSData->sAcc) * mm2m;
+	measurementCov(2,2) = ((float)GNSSData->sAcc) * mm2m * ((float)GNSSData->sAcc) * mm2m;
 	measurementCov(3,3) = ((float)GNSSData->hAcc) * mm2m * _ER;
 	measurementCov(4,4) = ((float)GNSSData->hAcc) * mm2m * _ER / cos(GNSSData->fLat * DEG_2_RAD);
 	measurementCov(5,5) = ((float)GNSSData->vAcc) * mm2m;
+	//LOG("measurementVec: \t%f, \t%f, \t%f, \t%f, \t%f, \t%f", measurementCov(0,0), measurementCov(1,1), measurementCov(2,2), measurementCov(3,3), measurementCov(4,4), measurementCov(5,5));
 	_velocityEKF.Update(measurementVec, measurementCov, _velocityEKF.GetTime());
+	printf("%f, %.15f, %.15f, %.15f, %.15f, %.15f, %.15f, %.15f, %.15f, %.15f\n\r", _velocityEKF.GetTime(),
+			measurementVec(0), measurementVec(1), measurementVec(2),
+			measurementVec(3), measurementVec(4), measurementVec(5),
+			((float)GNSSData->sAcc) * mm2m, ((float)GNSSData->hAcc) * mm2m * _ER, ((float)GNSSData->vAcc) * mm2m);
 }
 
 
@@ -149,6 +166,7 @@ const Matrix<3,3>& FusionAlgorithm::_GetGlobalAccCov(float x, float y, float z) 
         -x*q(2) + y*q(1) , x*q(3) + y*q(0) -2.0f*z*q(1) , -x*q(0) + y*q(3) - 2.0f*z*q(2) , x*q(1) + y*q(2)
 	}};
 	result = a_a*_orientationControlCov*a_a.Transposed() + a_q*_AHRSKalman.GetNoiseCovariance()*a_q.Transposed();
+	//LOG("\n%f, %f, %f \n%f, %f, %f \n%f, %f, %f", result(0,0), result(0,1), result(0,2), result(1,0), result(1,1), result(1,2), result(2,0), result(2,1), result(2,2));
 	return result;
 }
 

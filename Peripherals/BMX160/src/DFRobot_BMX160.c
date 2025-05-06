@@ -157,7 +157,7 @@ void Bmx160_getAllData(sBmx160SensorData_t *magn, sBmx160SensorData_t *gyro, sBm
         y = (int16_t) (((uint16_t)data[3] << 8) | data[2]);
         z = (int16_t) (((uint16_t)data[5] << 8) | data[4]);
         if(x == old_x && y == old_y && z == old_z)
-        	LOG("ERROR: X: %d, Y: %d, Z: %d", x, y, z);
+        	//printf("ERROR: X: %d, Y: %d, Z: %d\n\r", x, y, z);
         old_x = x; old_y = y; old_z = z;
         //printf("Raw:%d,%d,%d,%d,%d,%d,%d,%d,%d\n\r", 0, 0, 0, 0, 0, 0, x, y, z);
         magn->x = x * Bmx160_MAGN_UT_LSB_XY;

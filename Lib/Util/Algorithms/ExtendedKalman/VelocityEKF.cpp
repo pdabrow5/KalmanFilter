@@ -8,45 +8,60 @@
 
 #include <math.h>
 #include "constants.h"
+#include "logger.h"
 
 namespace Algorithms
 {
 
 void VelocityEKF::Update(const MeassurementVec& meassurementVec, const MeasurementCovarianceMatrix& meassurementCov, float time)
 {
+	_stateCovMatrix(0,0) = 0.002;
+	_stateCovMatrix(1,1) = 0.002;
+	_stateCovMatrix(2,2) = 0.002;
+	_stateCovMatrix(3,3) = 1.000000;
+	_stateCovMatrix(4,4) = 1.000000;
+	_stateCovMatrix(5,5) = 1.000000;
 	_UpdateVelocity(meassurementVec, meassurementCov);
-	_UpdatePosition(meassurementVec, meassurementCov);
+	//_UpdatePosition(meassurementVec, meassurementCov);
 	_time = time;
 }
 
 void VelocityEKF::_UpdateVelocity(const MeassurementVec& meassurementVec, const MeasurementCovarianceMatrix& meassurementCov)
 {
 	V_Vector<3> z{{meassurementVec(0), meassurementVec(1), meassurementVec(2)}};
+	//LOG("State: %f, %f, %f, %f, %f, %f", _state(0), _state(1), _state(2), _state(3), _state(4), _state(5));
 	V_Vector<3> h{{_state(0), _state(1), _state(2)}};
 	static Matrix<3, VelocityEKF_stateLen> H{0.0f};
 	H(0,0) = 1.0f; H(1,1) = 1.0f; H(2,2) = 1.0f;
 	static Matrix<3, 3> R{0.0f};
 	R(0,0) = meassurementCov(0,0); R(1,1) = meassurementCov(1,1); R(2,2) = meassurementCov(2,2);
-
-	auto S = H * _stateCovMatrix * H.Transposed() + R;
+	//LOG("COV: %f, %f, %f, %f, %f, %f", R(0,0), R(0,0), R(0,0));
+	auto S = H * _stateCovMatrix * H.Transposed();
 	auto K = _stateCovMatrix * H.Transposed() * _Invert3x3Matrix(S);
 	_state += K * (z - h);
+	//LOG("State: %f, %f, %f, %f, %f, %f", _state(0), _state(1), _state(2), _state(3), _state(4), _state(5));
+	printf("%f, %f, %f, %f\n\r", _time, meassurementVec(0), meassurementVec(1), meassurementVec(2));
+	//LOG("COV: %f, %f, %f, %f, %f, %f", _stateCovMatrix(0,0), _stateCovMatrix(1,1), _stateCovMatrix(2,2), _stateCovMatrix(3,3), _stateCovMatrix(4,4), _stateCovMatrix(5,5));
 	_stateCovMatrix = (Eye<VelocityEKF_stateLen>(1.0f) - K*H) * _stateCovMatrix;
+	//LOG("COV: %f, %f, %f, %f, %f, %f", _stateCovMatrix(0,0), _stateCovMatrix(1,1), _stateCovMatrix(2,2), _stateCovMatrix(3,3), _stateCovMatrix(4,4), _stateCovMatrix(5,5));
 }
 
 void VelocityEKF::_UpdatePosition(const MeassurementVec& meassurementVec, const MeasurementCovarianceMatrix& meassurementCov)
 {
 	V_Vector<3> z{{meassurementVec(3), meassurementVec(4), meassurementVec(5)}};
 	V_Vector<3> h{{_state(3), _state(4), _state(5)}};
+	//LOG("State: %f, %f, %f, %f, %f, %f", meassurementVec(3), meassurementVec(4), meassurementVec(5), _state(3), _state(4), _state(5));
 	static Matrix<3, VelocityEKF_stateLen> H{0.0f};
 	H(0,3) = 1.0f; H(1,4) = 1.0f; H(2,5) = 1.0f;
 	static Matrix<3, 3> R{0.0f};
 	R(0,0) = meassurementCov(3,3)*_ER; R(1,1) = meassurementCov(4,4)*_ER / cos(_state(3)); R(2,2) = meassurementCov(5,5);
+	R(0,0) = R(0,0)*R(0,0); R(1,1) = R(1,1)*R(1,1); R(2,2) = R(2,2)*R(2,2);
 
 	auto S = H * _stateCovMatrix * H.Transposed() + R;
 	auto K = _stateCovMatrix * H.Transposed() * _Invert3x3Matrix(S);
 	_state += K * (z - h);
 	_stateCovMatrix = (Eye<VelocityEKF_stateLen>(1.0f) - K*H) * _stateCovMatrix;
+	//LOG("State: %f, %f, %f, %f, %f, %f", _state(0), _state(1), _state(2), _state(3), _state(4), _state(5));
 }
 
 VelocityEKF::StateVec VelocityEKF::_f(const ControlVec& controlVec, float time) const
@@ -86,7 +101,13 @@ VelocityEKF::StateCovarianceMatrix VelocityEKF::_Q(const ControlVec& controlVec,
 	W(3,1) = dt2_2*_ER;
 	W(4,0) = W(3,1) / cos(_state(3));
 	W(5,2) = dt2_2;
-	return W*controlCov*W.Transposed();
+//	W(0,0) = sqrt(dt); W(1,1) = sqrt(dt); W(2,2) = sqrt(dt);
+//	W(3,1) = sqrt(dt2_2*_ER);
+//	W(4,0) = W(3,1) / sqrt(cos(_state(3)));
+//	W(5,2) = sqrt(dt2_2);
+	auto result = W*controlCov*W.Transposed();
+	//LOG("");
+	return result;
 }
 
 VelocityEKF::MeassurementVec VelocityEKF::_h() const

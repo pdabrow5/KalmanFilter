@@ -118,7 +118,7 @@ void AHRSKalman::UpdateState(const Matrix<3, 1>& U, float time)
 
 void AHRSKalman::CorrectStateMag(const Matrix<3, 1>& mag, float time)
 {
-	float dip = 0.5f;
+	const float dip = 0.6f;
 	static const float ry{cos(dip)}, rz{-sin(dip)};
 	static Matrix<3, 1> Z;
 	static Matrix<3, 1> h;
